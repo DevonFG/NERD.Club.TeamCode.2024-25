@@ -1,13 +1,15 @@
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 
-@TeleOp(name="BasicWheelsCode", group="9044.NERD.")
+@TeleOp(name="BasicDriveCode", group="9044.NERD.")
 @Disabled
+public class BasicDriveCode extends LinearOpMode {
   
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -24,10 +26,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
       
         // Initialize the hardware variables. Note that the strings used here must correspond
         // to the names assigned during the robot configuration step on the DS or RC devices.
-        leftFrontDrive  = hardwareMap.get(DcMotor.class, "leftFront");
-        leftBackDrive  = hardwareMap.get(DcMotor.class, "leftBack");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFront");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "rightBack");
+        leftFrontWheel  = hardwareMap.get(DcMotor.class, "leftFront");
+        leftBackWheel  = hardwareMap.get(DcMotor.class, "leftBack");
+        rightFrontWheel = hardwareMap.get(DcMotor.class, "rightFront");
+        rightBackWheel = hardwareMap.get(DcMotor.class, "rightBack");
 
 
       
