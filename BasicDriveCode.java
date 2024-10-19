@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 
 @TeleOp(name="BasicDriveCode", group="9044.NERD.")
-@Disabled
 public class BasicDriveCode extends LinearOpMode {
   
     // Declare OpMode members.
@@ -51,6 +50,7 @@ public class BasicDriveCode extends LinearOpMode {
         while (opModeIsActive()) {
           
             double max;
+            double min;
 
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
             double axial    = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value - Forward and Backward 
@@ -65,12 +65,17 @@ public class BasicDriveCode extends LinearOpMode {
             double rightFrontPower = - axial + strafe + rotation;
             double leftBackPower   = - axial + strafe - rotation;
             double rightBackPower  = - axial - strafe + rotation;
-
+          
             // Normalize the values so no wheel power exceeds 100%
             // This ensures that the robot maintains the desired motion.
             max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
             max = Math.max(max, Math.abs(leftBackPower));
             max = Math.max(max, Math.abs(rightBackPower));
+            
+            min = Math.min(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
+            min = Math.min(min, Math.abs(leftBackPower));
+            min = Math.min(min, Math.abs(rightBackPower));
+            
             
             if (max > 1.0) {
                 leftFrontPower  /= max;
@@ -78,7 +83,13 @@ public class BasicDriveCode extends LinearOpMode {
                 leftBackPower   /= max;
                 rightBackPower  /= max;
             }
-
+            
+            if (min < -1.0) {
+              leftFrontPower    = -1.0;
+              rightFrontPower   = -1.0;
+              leftBackPower     = -1.0;
+              rightBackPower    = -1.0;
+            }
           
             // Send calculated power to wheels
             leftFrontWheel.setPower(leftFrontPower);
