@@ -96,7 +96,7 @@ public class Autonomous extends LinearOpMode {
           // Strafe right
           // Forward
 
-          forwardAndBackward("b");
+          direction = "f";
           sleep(2000);
           reset();
           sideways("r");
