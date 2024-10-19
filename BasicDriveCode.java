@@ -54,8 +54,8 @@ public class BasicDriveCode extends LinearOpMode {
 
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
             double axial    = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value - Forward and Backward 
-            double strafe   =  gamepad1.right_stick_x;  // Strafe - Left and Right - taking move right as positive
-            double rotation =  gamepad1.left_stick_x;  // Rotation - ClockWise and CounterClockWise - taking turn right as positive
+            double strafe   =  gamepad1.left_stick_x;  // Strafe - Left and Right - taking move right as positive
+            double rotation =  gamepad1.right_stick_x;  // Rotation - ClockWise and CounterClockWise - taking turn right as positive
 
             // Left Front & Back is reversed
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
