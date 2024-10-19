@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 
-@Autonomous(name="leftSideBasicAutonomous", group="9044.NERD.")
+@Autonomous(name="LeftSideBasicAutonomous", group="9044.NERD.")
 public class Autonomous extends LinearOpMode {
   
     // Declare OpMode members.
@@ -106,10 +106,12 @@ public class Autonomous extends LinearOpMode {
           sleep(1000);
           reset();
           
-
           
-          // only parameter is direction, give either string of f or b.
-          static void forwardAndBackward(direction) {
+          }
+        }
+        
+                 // only parameter is direction, give either string of f or b.
+          public void forwardAndBackward (direction) {
             if (direction == "f") {
               setMotorPower(leftFrontWheel,   1.0);
               setMotorPower(leftBackWheel,    1.0);
@@ -123,8 +125,10 @@ public class Autonomous extends LinearOpMode {
             }
           }
 
+          
+
           // only parameter is direction, give either string of r or l.
-          static void sideways(direction) {
+          private void sideways (direction) {
             if (direction == "r") {
               setMotorPower(leftFrontWheel,   1.0);
               setMotorPower(leftBackWheel,   -1.0);
@@ -139,13 +143,10 @@ public class Autonomous extends LinearOpMode {
           }
 
           // no parameters, just sets all motors to power 0
-          static void reset() {
+          private void reset() {
               setMotorPower(leftFrontWheel,   0.0);
               setMotorPower(leftBackWheel,    0.0);
               setMotorPower(rightFrontWheel,  0.0);
               setMotorPower(rightBackWheel,   0.0);
           }
-          
-          }
-        }
-    }}
+    }
