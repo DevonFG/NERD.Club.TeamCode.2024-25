@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-
 @Autonomous(name="LeftSideBasicAutonomous", group="9044.NERD.")
 public class Autonomous extends LinearOpMode {
   
@@ -18,6 +17,46 @@ public class Autonomous extends LinearOpMode {
     private DcMotor rightFrontWheel = null;
     private DcMotor rightBackWheel = null;
 
+
+    // only parameter is direction, give either string of f or b.    
+    public void forwardAndBackward(String direction) {
+      if (direction == "f") {
+        setMotorPower(leftFrontWheel,   1.0);
+        setMotorPower(leftBackWheel,    1.0);
+        setMotorPower(rightFrontWheel,  1.0);
+        setMotorPower(rightBackWheel,   1.0);
+      } else if (direction == "b") {
+        setMotorPower(leftFrontWheel,  -1.0);
+        setMotorPower(leftBackWheel,   -1.0);
+        setMotorPower(rightFrontWheel, -1.0);
+        setMotorPower(rightBackWheel,  -1.0);              
+      }
+    }
+
+
+
+    // only parameter is direction, give either string of r or l.
+    private void sideways (String direction) {
+      if (direction == "r") {
+        setMotorPower(leftFrontWheel,   1.0);
+        setMotorPower(leftBackWheel,   -1.0);
+        setMotorPower(rightFrontWheel, -1.0);
+        setMotorPower(rightBackWheel,   1.0);
+      } else if (direction == "l") {
+        setMotorPower(leftFrontWheel,  -1.0);
+        setMotorPower(leftBackWheel,    1.0);
+        setMotorPower(rightFrontWheel,  1.0);
+        setMotorPower(rightBackWheel,  -1.0);
+      }
+    }
+
+    // no parameters, just sets all motors to power 0
+     private void reset() {
+        setMotorPower(leftFrontWheel,   0.0);
+        setMotorPower(leftBackWheel,    0.0);
+        setMotorPower(rightFrontWheel,  0.0);
+        setMotorPower(rightBackWheel,   0.0);
+    }
 
     @Override
     public void runOpMode() {
@@ -109,44 +148,4 @@ public class Autonomous extends LinearOpMode {
           
           }
         }
-        
-                 // only parameter is direction, give either string of f or b.
-          public void forwardAndBackward (direction) {
-            if (direction == "f") {
-              setMotorPower(leftFrontWheel,   1.0);
-              setMotorPower(leftBackWheel,    1.0);
-              setMotorPower(rightFrontWheel,  1.0);
-              setMotorPower(rightBackWheel,   1.0);
-            } else if (direction == "b") {
-              setMotorPower(leftFrontWheel,  -1.0);
-              setMotorPower(leftBackWheel,   -1.0);
-              setMotorPower(rightFrontWheel, -1.0);
-              setMotorPower(rightBackWheel,  -1.0);              
-            }
-          }
-
-          
-
-          // only parameter is direction, give either string of r or l.
-          private void sideways (direction) {
-            if (direction == "r") {
-              setMotorPower(leftFrontWheel,   1.0);
-              setMotorPower(leftBackWheel,   -1.0);
-              setMotorPower(rightFrontWheel, -1.0);
-              setMotorPower(rightBackWheel,   1.0);
-            } else if (direction == "l") {
-              setMotorPower(leftFrontWheel,  -1.0);
-              setMotorPower(leftBackWheel,    1.0);
-              setMotorPower(rightFrontWheel,  1.0);
-              setMotorPower(rightBackWheel,  -1.0);
-            }
-          }
-
-          // no parameters, just sets all motors to power 0
-          private void reset() {
-              setMotorPower(leftFrontWheel,   0.0);
-              setMotorPower(leftBackWheel,    0.0);
-              setMotorPower(rightFrontWheel,  0.0);
-              setMotorPower(rightBackWheel,   0.0);
-          }
-    }
+     }
