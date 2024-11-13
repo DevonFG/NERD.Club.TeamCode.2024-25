@@ -52,9 +52,11 @@ public class HardwareFile2024 {
         leftBackWheel   = hardwareMap.get(DcMotor.class, "leftBack");
         rightFrontWheel = hardwareMap.get(DcMotor.class, "rightFront");
         rightBackWheel  = hardwareMap.get(DcMotor.class, "rightBack");
+        
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
+        
         leftFrontWheel.setDirection(DcMotor.Direction.REVERSE);
         leftBackWheel.setDirection(DcMotor.Direction.REVERSE);
         rightFrontWheel.setDirection(DcMotor.Direction.FORWARD);
@@ -70,8 +72,8 @@ public class HardwareFile2024 {
         // leftHand.setPosition(MID_SERVO);
         // rightHand.setPosition(MID_SERVO);
 
-        // myOpMode.telemetry.addData(">", "Hardware Initialized");
-        // myOpMode.telemetry.update();
+        telemetry.addData(">", "Hardware Initialized");
+        telemetry.update();
     }
 
     /**
@@ -82,10 +84,11 @@ public class HardwareFile2024 {
      * @param Drive     Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
      * @param Turn      Right/Left turning power (-1.0 to 1.0) +ve is CW
      */
-    public void driveRobot(double Drive, double Turn) {
+    public void driveRobot(double Drive, double Turn, double strafe ) {
         // Combine drive and turn for blended motion.
-        double left  = Drive + Turn;
-        double right = Drive - Turn;
+        double axial  = Drive + Turn;
+        double strafe = Drive - Turn;
+        double rotation = Drive + Turn 
 
         // Scale the values so neither exceed +/- 1.0
         double max = Math.max(Math.abs(left), Math.abs(right));
