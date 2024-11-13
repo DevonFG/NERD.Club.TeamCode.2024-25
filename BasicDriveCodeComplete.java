@@ -25,3 +25,18 @@ import org.firstinspires.ftc.teamcode.HardwareFile2024;
         telemetry.addData("Status", "Ready To Roll!");
         telemetry.update();
 
+ while (opModeIsActive()) {
+            
+            // get input from controller
+   
+            driveForwardBackwards = -gamepad1.left_stick_y;
+            driveRightLeft = gamepad1.left_stick_x;
+            rotateRightLeft = gamepad1.right_stick_x;
+   
+   telemetry.addData("Motors", "DriveForwardBackwards (%.2f)", driveForwardBackwards);
+   telemetry.update();
+            sleep(50);
+        }
+    }
+}
+   
