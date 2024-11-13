@@ -6,4 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 //import the hardware file//
-import org.firstinspires.ftc.teamcode.HardwareFile2024
+import org.firstinspires.ftc.teamcode.HardwareFile2024;
+
+@TeleOp(name= "BasicDriveCodeComplete", group="Teamcode.")
