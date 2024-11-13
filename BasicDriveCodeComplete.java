@@ -9,3 +9,19 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.HardwareFile2024;
 
 @TeleOp(name= "BasicDriveCodeComplete", group="Teamcode.")
+
+  public class BasicDriveCodeComplete extends LinearOpMode {
+    
+    @Override
+    public void runOpMode() {
+        HardwareFile2024 robot = new HardwareFile2024(this);
+        robot.init();
+
+      double driveForwardBackwards = 0.0;
+        double driveRightLeft        = 0.0;
+        double rotateRightLeft       = 0.0;
+        
+        
+        telemetry.addData("Status", "Ready To Roll!");
+        telemetry.update();
+
