@@ -58,20 +58,34 @@ public class HardwareFile2024 {
             double rightFrontPower = - axial + strafe + rotation;
             double leftBackPower   = - axial + strafe - rotation;
             double rightBackPower  = - axial - strafe + rotation;
-// CONTINUE HERE=====================================================================================================================================================================
-        // Scale the values so neither exceed +/- 1.0
-        double max ;
-        max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
+        
+        // Scale the values so neither exceed +/- 1.0          
+            double max;
+            double min;
+        
+            // Normalize the values so no wheel power exceeds 100%
+            // This ensures that the robot maintains the desired motion.
+            max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
+            max = Math.max(max, Math.abs(leftBackPower));
+            max = Math.max(max, Math.abs(rightBackPower));
             
-        max = Math.max(max, Math.abs(leftBackPower));
-        max = Math.max(max, Math.abs(rightBackPower));
+            min = Math.min(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
+            min = Math.min(min, Math.abs(leftBackPower));
+            min = Math.min(min, Math.abs(rightBackPower));
 
-        if (max > 1.0) {
-            leftFrontPower  /= max;
-            rightFrontPower /= max;
-            leftBackPower   /= max;
-            rightBackPower  /= max;
-        }
+            if (max > 1.0) {
+                leftFrontPower  /= max;
+                rightFrontPower /= max;
+                leftBackPower   /= max;
+                rightBackPower  /= max;
+            }
+            
+            if (min < -1.0) {
+              leftFrontPower    = -1.0;
+              rightFrontPower   = -1.0;
+              leftBackPower     = -1.0;
+              rightBackPower    = -1.0;
+            }
 
         // Send calculated power to wheels
         leftFrontDrive.setPower(leftFrontPower);
@@ -80,73 +94,4 @@ public class HardwareFile2024 {
         rightBackDrive.setPower(rightBackPower);
         
     }
-    
-    public void setArmServos(double x, double y, double handAngle) {
-        // all units are centimeters or radians
-        double l1 = 36;
-        double l2 = 35.5;
-        
-        // need to find this value
-        double servoShoulderFlat = 0;
-        
-        double h = Math.sqrt(x + y);
-        double w = Math.atan(y/x);
-        double alpha = Math.acos((Math.pow(l1, 2) + Math.pow(h, 2) - Math.pow(l2, 2)) / (2 * l1 * h));
-        double beta = Math.acos((Math.pow(l2, 2) + Math.pow(l1, 2) - Math.pow(h, 2)) / (2 * l2 * l1));
-        
-        double servoShoulderAngle = alpha + w;
-        double servoElbowAngle = beta;
-    }
-    
-    public double getArmShoulderAngle() {
-        return armServoShoulder.getPosition();
-    }
-    
-    public double getArmElbowAngle() {
-        return armServoElbow.getPosition();
-    }
-    
-    public double getArmWristAngle() {
-        return armServoWrist.getPosition();
-    }
-    
-    public double getArmFingerAngle() {
-        return armServoFinger.getPosition();
-    }
-    
-    public void setArmFingerAngle(double angle) {
-        armServoFinger.setPosition(angle);
-    }
-    
-    public void setArmWristAngle(double angle) {
-        armServoWrist.setPosition(angle);
-    }
-
-    /**
-     * Pass the requested wheel motor powers to the appropriate hardware drive motors.
-     *
-     * @param leftWheel     Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
-     * @param rightWheel    Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
-     */
-  
-
-    /**
-     * Pass the requested arm power to the appropriate hardware drive motor
-     *
-     * @param power driving power (-1.0 to 1.0)
-     */
-    // public void setArmPower(double power) {
-    //     armMotor.setPower(power);
-    // }
-
-    // /**
-    //  * Send the two hand-servos to opposing (mirrored) positions, based on the passed offset.
-    //  *
-    //  * @param offset
-    //  */
-    // public void setHandPositions(double offset) {
-    //     offset = Range.clip(offset, -0.5, 0.5);
-    //     leftHand.setPosition(MID_SERVO + offset);
-    //     rightHand.setPosition(MID_SERVO - offset);
-    // }
 }
