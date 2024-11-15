@@ -9,12 +9,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public class HardwareFile2024 {
     
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
+    public ElapsedTime runtime = new ElapsedTime();
     
-    private DcMotor leftFrontWheel = null; //Motors to control all wheels
-    private DcMotor leftBackWheel = null;
-    private DcMotor rightFrontWheel = null;
-    private DcMotor rightBackWheel = null;
+    public DcMotor leftFrontWheel = null; //Motors to control all wheels
+    public DcMotor leftBackWheel = null;
+    public DcMotor rightFrontWheel = null;
+    public DcMotor rightBackWheel = null;
     
     // Define a constructor that allows the OpMode to pass a reference to itself.
     public Hardware (LinearOpMode opmode) {
