@@ -1,6 +1,6 @@
 import org.firstinspires.ftc.teamcode.HardwareFile2024;
 
-public class autonomousHardware {
+public class AutonomousHardware {
   // Declare paremeters to be used for all autonomous movement.  
   // only parameter is direction, give either string of f or b.    
     public void forwardAndBackward(String direction) {
