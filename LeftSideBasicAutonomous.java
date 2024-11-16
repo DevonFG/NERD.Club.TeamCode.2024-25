@@ -26,8 +26,23 @@ public class Autonomous extends LinearOpMode {
           forwardAndBackward("f");
           sleep(1000);
           reset();
-          */
-          
-          }
+            */
+            
+            // robot.driveRobot(axial, strafe, rotation);
+            // axial - pos is forward, neg is backward
+            // strafe - pos is right, neg is left
+            // rotation - pos is clockwise, neg is counterclockwise
+            
+            robot.driveRobot(1.0, 0.0, 0.0);
+            sleep(2000);
+            robot.driveRobot(0.0, 0.0, 0.0);
+            robot.driveRobot(0.0, 1.0, 0.0);
+            sleep(2000);
+            robot.driveRobot(0.0, 0.0, 0.0);
+            robot.driveRobot(1.0, 0.0, 0.0);
+            sleep(2000);
+            robot.driveRobot(0.0, 0.0, 0.0);
+            
         }
-     }
+    }
+}
