@@ -1,3 +1,4 @@
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -5,10 +6,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.Range;
 
 public class HardwareFile2024 {
     
-    // Declare OpMode members.
+    public LinearOpMode myOpMode = null;
+    
+    // Declare OpMode members
     public ElapsedTime runtime = new ElapsedTime();
     
     public DcMotor leftFrontWheel = null; //Motors to control all wheels
@@ -17,10 +21,7 @@ public class HardwareFile2024 {
     public DcMotor rightBackWheel = null;
     
     // Define a constructor that allows the OpMode to pass a reference to itself.
-    public Hardware (LinearOpMode opmode) {
-        myOpMode = opmode;
-        
-    }
+
 
     /**
      * Initialize all the robot's hardware.
@@ -28,12 +29,17 @@ public class HardwareFile2024 {
      * <p>
      * All of the hardware devices are accessed via the hardware map, and initialized.
      */
+     
+    public HardwareFile2024 (LinearOpMode opmode) {
+        myOpMode = opmode;
+    }
+     
     public void init()    {
 
-        leftFrontWheel  = hardwareMap.get(DcMotor.class, "leftFront");
-        leftBackWheel  = hardwareMap.get(DcMotor.class, "leftBack");
-        rightFrontWheel = hardwareMap.get(DcMotor.class, "rightFront");
-        rightBackWheel = hardwareMap.get(DcMotor.class, "rightBack");
+        leftFrontWheel  = myOpMode.hardwareMap.get(DcMotor.class, "leftFront");
+        leftBackWheel   = myOpMode.hardwareMap.get(DcMotor.class, "leftBack");
+        rightFrontWheel = myOpMode.hardwareMap.get(DcMotor.class, "rightFront");
+        rightBackWheel  = myOpMode.hardwareMap.get(DcMotor.class, "rightBack");
        
         leftFrontWheel.setDirection(DcMotor.Direction.REVERSE);
         leftBackWheel.setDirection(DcMotor.Direction.REVERSE);
@@ -52,12 +58,17 @@ public class HardwareFile2024 {
      * @param Drive     Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
      * @param Turn      Right/Left turning power (-1.0 to 1.0) +ve is CW
      */
+     
+     double axial;
+     double strafe;
+     double rotation;
+     
     public void driveRobot(double axial, double strafe, double rotation) {
         // Combine drive and turn for blended motion.
             double leftFrontPower  = - axial - strafe - rotation;
             double rightFrontPower = - axial + strafe + rotation;
-            double leftBackPower   = - axial + strafe - rotation;
-            double rightBackPower  = - axial - strafe + rotation;
+            double leftBackPower   =   axial + strafe - rotation;
+            double rightBackPower  =   axial - strafe + rotation;
         
         // Scale the values so neither exceed +/- 1.0          
             double max;
@@ -88,14 +99,14 @@ public class HardwareFile2024 {
             }
 
         // Send calculated power to wheels
-        leftFrontDrive.setPower(leftFrontPower);
-        rightFrontDrive.setPower(rightFrontPower);
-        leftBackDrive.setPower(leftBackPower);
-        rightBackDrive.setPower(rightBackPower);
+        leftFrontWheel.setPower(leftFrontPower);
+        rightFrontWheel.setPower(rightFrontPower);
+        leftBackWheel.setPower(leftBackPower);
+        rightBackWheel.setPower(rightBackPower);
 
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
-            telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
-            telemetry.update();
+            myOpMode.telemetry.addData("Status", "Run Time: " + runtime.toString());
+            myOpMode.telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
+            myOpMode.telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+            myOpMode.telemetry.update();
     }
 }
