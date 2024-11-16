@@ -1,7 +1,7 @@
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-// import org.firstinspires.ftc.teamcode.HardwareFile2024;
-import org.firstinspires.ftc.teamcode.AutonomousHardware;
+import org.firstinspires.ftc.teamcode.HardwareFile2024;
+// import org.firstinspires.ftc.teamcode.AutonomousHardware;
 
 @Autonomous(name="LeftSideBasicAutonomous", group="9044.NERD.")
 public class Autonomous extends LinearOpMode {
