@@ -1,3 +1,4 @@
+//Need to program limit switches to stop the brush
 
 package org.firstinspires.ftc.teamcode;
 
@@ -7,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class RobotHardware {
     
@@ -20,12 +22,23 @@ public class RobotHardware {
     public DcMotor rightFrontWheel = null;
     public DcMotor rightBackWheel = null;
 
-    public DcMotor leftLeg = null;
+    public DcMotor leftLeg = null; //Motors for the feet
     public DcMotor rightLeg = null;
     
-    public DcMotor spiralLift = null;
+    public DcMotor spiralLift = null; //Motors for the archimedes screw
     public DcMotor spiralBrush = null;
-    
+
+    public CRServo highBrush = null; //Servos for the brush
+    public CRServo lowBrush = null;
+    public CRServo leftSweepOutServo = null;
+    public CRServo rightSweepOutServo = null;
+
+    public TouchSensor brushExtended;
+    public TouchSensor brushRetracted;
+
+    private double BRUSH_SPEED = 0.5; //Set betwwen 0.0 and 0.5
+    private double REACH_SPEED = 0.3;
+    private boolean BRUSH_MOVING = false;
     // Define a constructor that allows the OpMode to pass a reference to itself.
 
 
@@ -57,6 +70,11 @@ public class RobotHardware {
 
         spiralLift      = myOpMode.hardwareMap.get(DcMotor.class, "archimedes");
         spiralBrush     = myOpMode.hardwareMap.get(DcMotor.class, "brush");
+
+        highBrush           = myOpMode.hardwareMap.get(CRServo.class, "highArmBrush");
+        lowBrush            = myOpMode.hardwareMap.get(CRServo.class, "lowArmBrush");
+        leftSweepOutServo   = myOpMode.hardwareMap.get(CRServo.class, "leftSweepOut");
+        rightSweepOutServo  = myOpMode.hardwareMap.get(CRServo.class, "rightSeepOut");
         
         myOpMode.telemetry.addData(">", "Hardware Initialized");
         myOpMode.telemetry.update();
@@ -111,25 +129,29 @@ public class RobotHardware {
         myOpMode.telemetry.update();
     }
 
-    // public void setDrivePower(double leftWheel, double rightWheel) {
-    //     // Output the values to the motor drives.
-    //     leftDrive.setPower(leftWheel);
-    //     rightDrive.setPower(rightWheel);
-    // }
-
-    // public void setArmPower(double power) {
-    //     armMotor.setPower(power);
-    // }
-
-    public void setSweperPositions(double offset) { 
-    //This code came from samples
-        offset = Range.clip(offset, -0.5, 0.5);
-        leftHand.setPosition(MID_SERVO + offset);
-        rightHand.setPosition(MID_SERVO - offset);
+    public void activateSweeper() { 
+        highArmBrush.setPower(0.5 + BRUSH_SPEED);
+        lowArmBrush.setPower (0.5 - BRUSH_SPEED);
     }
-
+    public void deactivateSweeper() { 
+        highArmBrush.setPower(0.5);
+        lowArmBrush.setPower (0.5);
+    }
+    public void brushReach() { 
+        if (!BRUSH_MOVING){
+            if (brushExtended.isPressed()){
+                leftSweepOut.setPower  (0.5 + REACH_SPEED);
+                rightSweepOut.setPower (0.5 - REACH_SPEED);
+            } else {
+                leftSweepOut.setPower  (0.5 - REACH_SPEED);
+                rightSweepOut.setPower (0.5 + REACH_SPEED);
+            }
+            brushMoving = true;
+        }
+        // We need to write in the opmode: if 
+    }
     public void standUp(double inches) {
-
+    
     }
     
     public void liftScrew(double inches) {
