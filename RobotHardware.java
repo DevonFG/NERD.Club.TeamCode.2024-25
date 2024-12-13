@@ -9,6 +9,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.hardware.TouchSensor;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class RobotHardware {
     
@@ -39,6 +42,14 @@ public class RobotHardware {
     private double BRUSH_SPEED = 0.5; //Set betwwen 0.0 and 0.5
     private double REACH_SPEED = 0.3;
     private boolean BRUSH_MOVING = false;
+
+    public double PANEL           = 2000; // miliseconds
+    public double INCH            = 2000/24 // miliseconds
+
+    List<DcMotor> allMotors = new ArrayList<>();
+    List<CRServo>   allServos = new ArrayList<>();
+    
+    
     // Define a constructor that allows the OpMode to pass a reference to itself.
 
 
@@ -75,6 +86,24 @@ public class RobotHardware {
         lowBrush            = myOpMode.hardwareMap.get(CRServo.class, "lowArmBrush");
         leftSweepOutServo   = myOpMode.hardwareMap.get(CRServo.class, "leftSweepOut");
         rightSweepOutServo  = myOpMode.hardwareMap.get(CRServo.class, "rightSeepOut");
+
+        allMotors.add(leftFrontWheel);
+        allMotors.add(leftBackWheel);
+        allMotors.add(rightFrontWheel);
+        allMotors.add(rightBackWheel);
+        allMotors.add(spiralLift);
+        allMotors.add(spiralBrush);
+        allMotors.add(leftLeg);
+        allMotors.add(rightLeg);
+        allMotors.add(leftLeg);
+        allMotors.add(rightLeg);
+
+        allServos.add(highBrush);
+        allServos.add(lowBrush);
+        allServos.add(leftSweepOutServo);
+        allServos.add(rightSweepOutServo);
+        
+        // Don't we need teh Touch Sensors here? =======================================================
         
         myOpMode.telemetry.addData(">", "Hardware Initialized");
         myOpMode.telemetry.update();
@@ -110,12 +139,22 @@ public class RobotHardware {
         max = Math.max(max, Math.abs(leftBackPower));
         max = Math.max(max, Math.abs(rightBackPower));
 
+        min = Math.min(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
+        max = Math.min(min, Math.abs(leftBackPower));
+        max = Math.min(min, Math.abs(rightBackPower));
+
         if (max > 1.0) {
             leftFrontPower  /= max;
             rightFrontPower /= max;
             leftBackPower   /= max;
             rightBackPower  /= max;
         }
+
+        if (min < -1.0) {
+            leftFrontPower /= min;
+            rightFrontPower /= min;
+            leftBackPower   /= min;
+            rightBackPower  /= min;
 
     // Send calculated power to wheels
         leftFrontWheel.setPower(leftFrontPower);
@@ -165,8 +204,19 @@ public class RobotHardware {
     public void setScrewPower(double spin) {
 
     }
-    
+
     public void toggleDepositDoor() {
 
     }
+    
+     public void telemetryUpdate() {
+        for (DcMotor thisMotor: allMotors) {
+            telemetry.addData("MotorSpeed", thisMotor.getPower());
+        }
+        for (Servo thisServo: allServos) {
+            telemetry.addData("ServoPosition", thisServo.getPosition());
+        }
+        telemetry.update();
+    }
+    
 }
