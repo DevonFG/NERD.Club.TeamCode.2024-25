@@ -14,24 +14,20 @@ public class Autonomous extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
+        int AUTO_SCORING = 4;
+
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-/*
-          forwardAndBackward("f");
-          sleep(1000);
-          reset();
-          sideways("r");
-          sleep(1000);
-          reset();
-          forwardAndBackward("f");
-          sleep(1000);
-          reset();
-            */
-            
             // robot.driveRobot(axial, strafe, rotation);
             // axial - pos is forward, neg is backward
             // strafe - pos is right, neg is left
             // rotation - pos is clockwise, neg is counterclockwise
+
+            //instructions
+            for (int scores = 0; scores = <AUTO_SCORING; scores++;) {
+                //code to score 
+            }
+            //instructions like what is below
             
             robot.driveRobot(1.0, 0.0, 0.0);
             sleep(2000);
@@ -42,6 +38,8 @@ public class Autonomous extends LinearOpMode {
             robot.driveRobot(1.0, 0.0, 0.0);
             sleep(2000);
             robot.driveRobot(0.0, 0.0, 0.0);
+
+            robot.telemetryUpdate();
             
         }
     }
