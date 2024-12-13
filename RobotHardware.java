@@ -39,19 +39,21 @@ public class RobotHardware {
     public TouchSensor brushExtended;
     public TouchSensor brushRetracted;
 
-    private double BRUSH_SPEED = 0.5; //Set betwwen 0.0 and 0.5
-    private double REACH_SPEED = 0.3;
-    private boolean BRUSH_MOVING = false;
+    public Servo screwDoor;
+
+    private double  BRUSH_SPEED     = 0.5; //Set betwwen 0.0 and 0.5
+    private double  REACH_SPEED     = 0.3;
+    private boolean BRUSH_MOVING    = false;
+    private double  FEET_MOVE_SPEED = 1000; // miliseconds, need to get MAX NUMBER of time it takes
 
     public double PANEL           = 2000; // miliseconds
     public double INCH            = 2000/24 // miliseconds
 
-    List<DcMotor> allMotors = new ArrayList<>();
-    List<CRServo>   allServos = new ArrayList<>();
-    
+    List<DcMotor> allMotors   = new ArrayList<>();
+    List<CRServo> allCRServos = new ArrayList<>();
+    List<Servo>   allServos   = new ArrayList<>();
     
     // Define a constructor that allows the OpMode to pass a reference to itself.
-
 
     /**
      * Initialize all the robot's hardware.
@@ -85,8 +87,11 @@ public class RobotHardware {
         highBrush           = myOpMode.hardwareMap.get(CRServo.class, "highArmBrush");
         lowBrush            = myOpMode.hardwareMap.get(CRServo.class, "lowArmBrush");
         leftSweepOutServo   = myOpMode.hardwareMap.get(CRServo.class, "leftSweepOut");
-        rightSweepOutServo  = myOpMode.hardwareMap.get(CRServo.class, "rightSeepOut");
+        rightSweepOutServo  = myOpMode.hardwareMap.get(CRServo.class, "rightSweepOut");
 
+        //Need to put into config file
+        screwDoor = myOpMode.hardwareMap.get(Servo.class, "archimedesScrewDoor");
+        
         allMotors.add(leftFrontWheel);
         allMotors.add(leftBackWheel);
         allMotors.add(rightFrontWheel);
@@ -98,11 +103,12 @@ public class RobotHardware {
         allMotors.add(leftLeg);
         allMotors.add(rightLeg);
 
-        allServos.add(highBrush);
-        allServos.add(lowBrush);
-        allServos.add(leftSweepOutServo);
-        allServos.add(rightSweepOutServo);
-        
+        allCRServos.add(highBrush);
+        allCRServos.add(lowBrush);
+        allCRServos.add(leftSweepOutServo);
+        allCRServos.add(rightSweepOutServo);
+
+        allServos.add(screwDoor);
         // Don't we need teh Touch Sensors here? =======================================================
         
         myOpMode.telemetry.addData(">", "Hardware Initialized");
@@ -138,10 +144,10 @@ public class RobotHardware {
         max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
         max = Math.max(max, Math.abs(leftBackPower));
         max = Math.max(max, Math.abs(rightBackPower));
-
+    // Do not comment or delete this part of the code!!! It fixed multiple issues we had meet 1
         min = Math.min(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
-        max = Math.min(min, Math.abs(leftBackPower));
-        max = Math.min(min, Math.abs(rightBackPower));
+        min = Math.min(min, Math.abs(leftBackPower));
+        min = Math.min(min, Math.abs(rightBackPower));
 
         if (max > 1.0) {
             leftFrontPower  /= max;
@@ -168,52 +174,110 @@ public class RobotHardware {
         myOpMode.telemetry.update();
     }
 
-    public void activateSweeper() { 
-        highArmBrush.setPower(0.5 + BRUSH_SPEED);
-        lowArmBrush.setPower (0.5 - BRUSH_SPEED);
-    }
-    public void deactivateSweeper() { 
-        highArmBrush.setPower(0.5);
-        lowArmBrush.setPower (0.5);
+    // public void activateSweeper() { 
+    //     highBrush.setPower(0.5 + BRUSH_SPEED);
+    //     lowBrush.setPower (0.5 - BRUSH_SPEED);
+    // }
+    // public void deactivateSweeper() { 
+    //     highBrush.setPower(0.5);
+    //     lowBrush.setPower (0.5);
+    // }
+
+    public void toggleSweeper(string power) {
+        if (power == "on") {
+        highBrush.setPower(0.5 + BRUSH_SPEED);
+        lowBrush.setPower (0.5 - BRUSH_SPEED);
+        } else {
+        highBrush.setPower(0.5);
+        lowBrush.setPower (0.5);
+        }
     }
     public void brushReach() { 
         if (!BRUSH_MOVING){
             if (brushExtended.isPressed()){
-                leftSweepOut.setPower  (0.5 + REACH_SPEED);
-                rightSweepOut.setPower (0.5 - REACH_SPEED);
+                leftSweepOutServo.setPower  (0.5 + REACH_SPEED);
+                rightSweepOutServo.setPower (0.5 - REACH_SPEED);
             } else {
-                leftSweepOut.setPower  (0.5 - REACH_SPEED);
-                rightSweepOut.setPower (0.5 + REACH_SPEED);
+                leftSweepOutServo.setPower  (0.5 - REACH_SPEED);
+                rightSweepOutServo.setPower (0.5 + REACH_SPEED);
             }
             brushMoving = true;
         }
         // We need to write in the opmode: if 
     }
-    public void standUp(double inches) {
-    
+    public void standUp(string height) {
+        // Need to get measurements for how much we need the feet
+        // to expand during each of these phases (combine like ones later)
+        if (height == "highBasket") {
+            leftLeg.setPower  (___);
+            rightLeg.setPower (___);
+            sleep(FEET_MOVE_SPEED);
+        } else if (height == "lowBasket") {
+            leftLeg.setPower  (___);
+            rightLeg.setPower (___);
+            sleep(FEET_MOVE_SPEED);
+        } else if (height == "lowBar") {
+            leftLeg.setPower  (___);
+            rightLeg.setPower (___);
+            sleep(FEET_MOVE_SPEED);
+        } else if (height == "topBar") {
+            leftLeg.setPower  (___);
+            rightLeg.setPower (___);
+            sleep(FEET_MOVE_SPEED);
+        } else if (height == "none") {
+            leftLeg.setPower  (-1.0);
+            rightLeg.setPower (-1.0);
+            sleep(FEET_MOVE_SPEED);
+        }
     }
     
-    public void liftScrew(double inches) {
-
-    }
-    
-    public void toggleSweeper() {
-      
+    public void liftScrew(string height) {
+        // We need measurements for how high we need the screw to go
+        // during each of these scenarios (combine like heights later)
+        if (height == "highBasket") {
+            leftLeg.setPower  (___);
+            rightLeg.setPower (___);
+            sleep(FEET_MOVE_SPEED);
+        } else if (height == "lowBasket") {
+            leftLeg.setPower  (___);
+            rightLeg.setPower (___);
+            sleep(FEET_MOVE_SPEED);
+        } else if (height == "lowBar") {
+            leftLeg.setPower  (___);
+            rightLeg.setPower (___);
+            sleep(FEET_MOVE_SPEED);
+        } else if (height == "topBar") {
+            leftLeg.setPower  (___);
+            rightLeg.setPower (___);
+            sleep(FEET_MOVE_SPEED);
+        } else if (height == "none") {
+            leftLeg.setPower  (-1.0);
+            rightLeg.setPower (-1.0);
+            sleep(FEET_MOVE_SPEED);
+        }
+            
     }
     
     public void setScrewPower(double spin) {
-
+        spiralBrush.setPower(spin);
     }
 
-    public void toggleDepositDoor() {
-
+    public void toggleDepositDoor(string power) {
+        if (power == "on") {
+            screwDoor.setPosition(180); //untested
+        } else {
+            screwDoor.setPosition(0); // untested
+        }
     }
     
      public void telemetryUpdate() {
         for (DcMotor thisMotor: allMotors) {
             telemetry.addData("MotorSpeed", thisMotor.getPower());
         }
-        for (Servo thisServo: allServos) {
+        for (CRServo thisServo: allCRServos) {
+            telemetry.addData("ServoPower", thisServo.getPower());
+        }
+        for (Servo   thisServo: allServos) {
             telemetry.addData("ServoPosition", thisServo.getPosition());
         }
         telemetry.update();
