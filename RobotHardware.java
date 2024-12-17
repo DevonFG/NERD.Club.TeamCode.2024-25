@@ -46,12 +46,12 @@ public class RobotHardware {
     private boolean BRUSH_MOVING    = false;
     private double  FEET_MOVE_SPEED = 1000; // miliseconds, need to get MAX NUMBER of time it takes
 
-    public double PANEL           = 2000; // miliseconds
-    public double INCH            = 2000/24 // miliseconds
+    public double PANEL             = 2000; // miliseconds
+    public double INCH              = 2000/24 // miliseconds
 
-    List<DcMotor> allMotors   = new ArrayList<>();
-    List<CRServo> allCRServos = new ArrayList<>();
-    List<Servo>   allServos   = new ArrayList<>();
+    List<DcMotor> allMotors         = new ArrayList<>();
+    List<CRServo> allCRServos       = new ArrayList<>();
+    List<Servo>   allServos         = new ArrayList<>();
     
     // Define a constructor that allows the OpMode to pass a reference to itself.
 
@@ -78,11 +78,11 @@ public class RobotHardware {
         rightFrontWheel.setDirection(DcMotor.Direction.FORWARD);
         rightBackWheel.setDirection(DcMotor.Direction.FORWARD);
 
-        leftFoot        = myOpMode.hardwareMap.get(DcMotor.class, "myLeftFoot");
-        rightFoot       = myOpMode.hardwareMap.get(DcMotor.class, "myRightFoot");
+        leftFoot            = myOpMode.hardwareMap.get(DcMotor.class, "myLeftFoot");
+        rightFoot           = myOpMode.hardwareMap.get(DcMotor.class, "myRightFoot");
 
-        spiralLift      = myOpMode.hardwareMap.get(DcMotor.class, "archimedes");
-        spiralBrush     = myOpMode.hardwareMap.get(DcMotor.class, "brush");
+        spiralLift          = myOpMode.hardwareMap.get(DcMotor.class, "archimedes");
+        spiralBrush         = myOpMode.hardwareMap.get(DcMotor.class, "brush");
 
         highBrush           = myOpMode.hardwareMap.get(CRServo.class, "highArmBrush");
         lowBrush            = myOpMode.hardwareMap.get(CRServo.class, "lowArmBrush");
@@ -157,7 +157,7 @@ public class RobotHardware {
         }
 
         if (min < -1.0) {
-            leftFrontPower /= min;
+            leftFrontPower  /= min;
             rightFrontPower /= min;
             leftBackPower   /= min;
             rightBackPower  /= min;
@@ -167,11 +167,12 @@ public class RobotHardware {
         rightFrontWheel.setPower(rightFrontPower);
         leftBackWheel.setPower(leftBackPower);
         rightBackWheel.setPower(rightBackPower);
-
+/*
         myOpMode.telemetry.addData("Status", "Run Time: " + runtime.toString());
         myOpMode.telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
         myOpMode.telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
         myOpMode.telemetry.update();
+            */
     }
 
     // public void activateSweeper() { 
@@ -208,25 +209,21 @@ public class RobotHardware {
     public void standUp(string height) {
         // Need to get measurements for how much we need the feet
         // to expand during each of these phases (combine like ones later)
-        if (height == "highBasket") {
+            // max expand is 7.5
             leftLeg.setPower  (___);
             rightLeg.setPower (___);
             sleep(FEET_MOVE_SPEED);
-        } else if (height == "lowBasket") {
+        } else if (height == "LowBasketUp") {
             leftLeg.setPower  (___);
             rightLeg.setPower (___);
             sleep(FEET_MOVE_SPEED);
-        } else if (height == "lowBar") {
+        } else if (height == "RestFromLow") {
             leftLeg.setPower  (___);
             rightLeg.setPower (___);
             sleep(FEET_MOVE_SPEED);
-        } else if (height == "topBar") {
+        } else if (height == "RestFromFull") {
             leftLeg.setPower  (___);
             rightLeg.setPower (___);
-            sleep(FEET_MOVE_SPEED);
-        } else if (height == "none") {
-            leftLeg.setPower  (-1.0);
-            rightLeg.setPower (-1.0);
             sleep(FEET_MOVE_SPEED);
         }
     }
@@ -234,28 +231,23 @@ public class RobotHardware {
     public void liftScrew(string height) {
         // We need measurements for how high we need the screw to go
         // during each of these scenarios (combine like heights later)
-        if (height == "highBasket") {
+        if (height == "FullUp") {
+            // max expand is 7.5
             leftLeg.setPower  (___);
             rightLeg.setPower (___);
             sleep(FEET_MOVE_SPEED);
-        } else if (height == "lowBasket") {
+        } else if (height == "LowBasketUp") {
             leftLeg.setPower  (___);
             rightLeg.setPower (___);
             sleep(FEET_MOVE_SPEED);
-        } else if (height == "lowBar") {
+        } else if (height == "RestFromLow") {
             leftLeg.setPower  (___);
             rightLeg.setPower (___);
             sleep(FEET_MOVE_SPEED);
-        } else if (height == "topBar") {
+        } else if (height == "RestFromFull") {
             leftLeg.setPower  (___);
             rightLeg.setPower (___);
             sleep(FEET_MOVE_SPEED);
-        } else if (height == "none") {
-            leftLeg.setPower  (-1.0);
-            rightLeg.setPower (-1.0);
-            sleep(FEET_MOVE_SPEED);
-        }
-            
     }
     
     public void setScrewPower(double spin) {
@@ -270,7 +262,7 @@ public class RobotHardware {
         }
     }
     
-     public void telemetryUpdate() {
+    public void telemetryUpdate() {
         for (DcMotor thisMotor: allMotors) {
             telemetry.addData("MotorSpeed", thisMotor.getPower());
         }
@@ -280,7 +272,19 @@ public class RobotHardware {
         for (Servo   thisServo: allServos) {
             telemetry.addData("ServoPosition", thisServo.getPosition());
         }
+        telemetry.addData(runtime);
         telemetry.update();
+    }
+
+    public void staticvar(string wantedVar) {
+        if (wantedVar == "PANEL") {
+            return PANEL;
+        } else if (wantedVar == "INCHES") {
+            return INCH;
+        } else {
+            telemetry.addData("Couldn't get that variable's data from the hardware");
+            telemetry.update();
+        }
     }
     
 }
