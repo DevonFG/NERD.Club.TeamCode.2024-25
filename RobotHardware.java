@@ -41,13 +41,16 @@ public class RobotHardware {
 
     public Servo screwDoor;
 
-    private double  BRUSH_SPEED     = 0.5; //Set betwwen 0.0 and 0.5
-    private double  REACH_SPEED     = 0.3;
-    private boolean BRUSH_MOVING    = false;
-    private double  FEET_MOVE_SPEED = 1000; // miliseconds, need to get MAX NUMBER of time it takes
+    private double  BRUSH_SPEED           = 0.5; //Set betwwen 0.0 and 0.5
+    private double  REACH_SPEED           = 0.3;
+    private boolean BRUSH_MOVING          = false;
+    private double  FULL_FEET_LIFT_SPEED  = 2000; // miliseconds, not tested or measured
+    private double  LOW_FEET_LIFT_SPEED   = 1000; // miliseconds, not tested or measured
+    private double  FULL_SCREW_LIFT_SPEED = 2000; // miliseconds, not tested or measured
+    private double  LOW_SCREW_LIFT_SPEED  = 1000; // miliseconds, not tested or measured
 
-    public double PANEL             = 2000; // miliseconds
-    public double INCH              = 2000/24 // miliseconds
+    public double PANEL             = 2000;    // miliseconds
+    public double INCH              = 2000/24; // miliseconds
 
     List<DcMotor> allMotors         = new ArrayList<>();
     List<CRServo> allCRServos       = new ArrayList<>();
@@ -209,22 +212,23 @@ public class RobotHardware {
     public void standUp(string height) {
         // Need to get measurements for how much we need the feet
         // to expand during each of these phases (combine like ones later)
+        if (height == "FullUp") {
             // max expand is 7.5
-            leftLeg.setPower  (___);
-            rightLeg.setPower (___);
-            sleep(FEET_MOVE_SPEED);
+            leftLeg.setPower  (1.0);
+            rightLeg.setPower (1.0);
+            sleep(FULL_FEET_LIFT_SPEED);
         } else if (height == "LowBasketUp") {
-            leftLeg.setPower  (___);
-            rightLeg.setPower (___);
-            sleep(FEET_MOVE_SPEED);
+            leftLeg.setPower  (1.0);
+            rightLeg.setPower (1.0);
+            sleep(LOW_FEET_LIFT_SPEED);
         } else if (height == "RestFromLow") {
-            leftLeg.setPower  (___);
-            rightLeg.setPower (___);
-            sleep(FEET_MOVE_SPEED);
+            leftLeg.setPower  (-1.0);
+            rightLeg.setPower (-1.0);
+            sleep(LOW_FEET_LIFT_SPEED);
         } else if (height == "RestFromFull") {
-            leftLeg.setPower  (___);
-            rightLeg.setPower (___);
-            sleep(FEET_MOVE_SPEED);
+            leftLeg.setPower  (-1.0);
+            rightLeg.setPower (-1.0);
+            sleep(FULL_FEET_LIFT_SPEED);
         }
     }
     
@@ -233,21 +237,21 @@ public class RobotHardware {
         // during each of these scenarios (combine like heights later)
         if (height == "FullUp") {
             // max expand is 7.5
-            leftLeg.setPower  (___);
-            rightLeg.setPower (___);
-            sleep(FEET_MOVE_SPEED);
+            leftLeg.setPower  (1.0);
+            rightLeg.setPower (1.0);
+            sleep(FULL_SCREW_LIFT_SPEED);
         } else if (height == "LowBasketUp") {
-            leftLeg.setPower  (___);
-            rightLeg.setPower (___);
-            sleep(FEET_MOVE_SPEED);
+            leftLeg.setPower  (1.0);
+            rightLeg.setPower (1.0);
+            sleep(LOW_SCREW_LIFT_SPEED);
         } else if (height == "RestFromLow") {
-            leftLeg.setPower  (___);
-            rightLeg.setPower (___);
-            sleep(FEET_MOVE_SPEED);
+            leftLeg.setPower  (-1.0);
+            rightLeg.setPower (-1.0);
+            sleep(LOW_SCREW_LIFT_SPEED);
         } else if (height == "RestFromFull") {
-            leftLeg.setPower  (___);
-            rightLeg.setPower (___);
-            sleep(FEET_MOVE_SPEED);
+            leftLeg.setPower  (-1.0);
+            rightLeg.setPower (-1.0);
+            sleep(FULL_SCREW_LIFT_SPEED);
     }
     
     public void setScrewPower(double spin) {
@@ -285,6 +289,5 @@ public class RobotHardware {
             telemetry.addData("Couldn't get that variable's data from the hardware");
             telemetry.update();
         }
-    }
-    
+    }  
 }
