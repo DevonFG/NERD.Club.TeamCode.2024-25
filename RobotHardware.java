@@ -31,8 +31,8 @@ public class RobotHardware {
     public DcMotor screwLift = null; //Motors for the archimedes screw
     public DcMotor screwTurn = null;
 
-    public CRServo highFingers = null; //Servos for the brush
-    public CRServo lowFingers  = null;
+    public CRServo highFinger = null; //Servos for the brush
+    public CRServo lowFinger  = null;
     public CRServo leftSweepOutServo = null;
     public CRServo rightSweepOutServo = null;
 
@@ -84,11 +84,11 @@ public class RobotHardware {
         leftFoot            = myOpMode.hardwareMap.get(DcMotor.class, "myLeftFoot");
         rightFoot           = myOpMode.hardwareMap.get(DcMotor.class, "myRightFoot");
 
-        spiralLift          = myOpMode.hardwareMap.get(DcMotor.class, "archimedes");
-        spiralBrush         = myOpMode.hardwareMap.get(DcMotor.class, "brush");
+        screwLift           = myOpMode.hardwareMap.get(DcMotor.class, "archimedes");
+        screwTurn           = myOpMode.hardwareMap.get(DcMotor.class, "brush");
 
-        highBrush           = myOpMode.hardwareMap.get(CRServo.class, "highArmBrush");
-        lowBrush            = myOpMode.hardwareMap.get(CRServo.class, "lowArmBrush");
+        highFinger          = myOpMode.hardwareMap.get(CRServo.class, "highArmFinger");
+        lowFinger           = myOpMode.hardwareMap.get(CRServo.class, "lowArmFinger");
         leftSweepOutServo   = myOpMode.hardwareMap.get(CRServo.class, "leftSweepOut");
         rightSweepOutServo  = myOpMode.hardwareMap.get(CRServo.class, "rightSweepOut");
 
