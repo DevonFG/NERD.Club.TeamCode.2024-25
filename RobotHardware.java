@@ -25,14 +25,14 @@ public class RobotHardware {
     public DcMotor rightFrontWheel = null;
     public DcMotor rightBackWheel = null;
 
-    public DcMotor leftLeg = null; //Motors for the feet
+    public DcMotor leftLeg  = null; //Motors for the feet
     public DcMotor rightLeg = null;
     
-    public DcMotor spiralLift = null; //Motors for the archimedes screw
-    public DcMotor spiralBrush = null;
+    public DcMotor screwLift = null; //Motors for the archimedes screw
+    public DcMotor screwTurn = null;
 
-    public CRServo highBrush = null; //Servos for the brush
-    public CRServo lowBrush = null;
+    public CRServo highFingers = null; //Servos for the brush
+    public CRServo lowFingers  = null;
     public CRServo leftSweepOutServo = null;
     public CRServo rightSweepOutServo = null;
 
@@ -99,15 +99,15 @@ public class RobotHardware {
         allMotors.add(leftBackWheel);
         allMotors.add(rightFrontWheel);
         allMotors.add(rightBackWheel);
-        allMotors.add(spiralLift);
-        allMotors.add(spiralBrush);
+        allMotors.add(screwLift);
+        allMotors.add(screwTurn);
         allMotors.add(leftLeg);
         allMotors.add(rightLeg);
         allMotors.add(leftLeg);
         allMotors.add(rightLeg);
 
-        allCRServos.add(highBrush);
-        allCRServos.add(lowBrush);
+        allCRServos.add(highFingers);
+        allCRServos.add(lowFingers);
         allCRServos.add(leftSweepOutServo);
         allCRServos.add(rightSweepOutServo);
 
@@ -187,16 +187,16 @@ public class RobotHardware {
     //     lowBrush.setPower (0.5);
     // }
 
-    public void toggleSweeper(string power) {
+    public void toggleFingers(string power) {
         if (power == "on") {
-        highBrush.setPower(0.5 + BRUSH_SPEED);
-        lowBrush.setPower (0.5 - BRUSH_SPEED);
+        highFingers.setPower(0.5 + BRUSH_SPEED);
+        lowFingers.setPower (0.5 - BRUSH_SPEED);
         } else {
-        highBrush.setPower(0.5);
-        lowBrush.setPower (0.5);
+        highFingers.setPower(0.5);
+        lowFingers.setPower (0.5);
         }
     }
-    public void brushReach() { 
+    public void armExpand() { 
         if (!BRUSH_MOVING){
             if (brushExtended.isPressed()){
                 leftSweepOutServo.setPower  (0.5 + REACH_SPEED);
@@ -254,8 +254,8 @@ public class RobotHardware {
             sleep(FULL_SCREW_LIFT_SPEED);
     }
     
-    public void setScrewPower(double spin) {
-        spiralBrush.setPower(spin);
+    public void screwTurnPower(double spin) {
+        screwTurn.setPower(spin);
     }
 
     public void toggleDepositDoor(string power) {
