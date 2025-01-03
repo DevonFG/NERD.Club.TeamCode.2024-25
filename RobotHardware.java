@@ -16,7 +16,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.lang.Thread;
-public class RobotHardware {
+
+public class HardwareFile2024 {
     
     public LinearOpMode myOpMode = null;
     
@@ -68,7 +69,7 @@ public class RobotHardware {
      * All of the hardware devices are accessed via the hardware map, and initialized.
      */
      
-    public RobotHardware (LinearOpMode opmode) {
+    public HardwareFile2024 (LinearOpMode opmode) {
         myOpMode = opmode;
     }
      
