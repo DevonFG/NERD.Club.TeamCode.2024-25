@@ -217,19 +217,21 @@ public class RobotHardware {
             // max expand is 7.5
             leftFoot.setPower  (1.0);
             rightFoot.setPower (1.0);
-            waitTime += FULL_FEET_LIFT_SPEED;
+            waitTime += (double)FULL_FEET_LIFT_SPEED;
         } else if (height == "LowBasketUp") {
             leftFoot.setPower  (1.0);
             rightFoot.setPower (1.0);
-            // sleep(LOW_FEET_LIFT_SPEED);
+            waitTime += (double)LOW_FEET_LIFT_SPEED;
         } else if (height == "RestFromLow") {
             leftFoot.setPower  (-1.0);
             rightFoot.setPower (-1.0);
-            // sleep(LOW_FEET_LIFT_SPEED);
+            waitTime += (double)LOW_FEET_LIFT_SPEED;
         } else if (height == "RestFromFull") {
             leftFoot.setPower  (-1.0);
             rightFoot.setPower (-1.0);
-            // sleep(FULL_FEET_LIFT_SPEED);
+            waitTime += (double)FULL_FEET_LIFT_SPEED;
+        }
+        while (runtime.milliseconds() <= waitTime) {
         }
     }
     
