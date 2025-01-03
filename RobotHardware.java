@@ -3,6 +3,9 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import java.lang.reflect.Array;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -112,8 +115,6 @@ public class RobotHardware {
         allServos.add(screwDoor);
         // Don't we need the Touch Sensors here? =======================================================
         
-        myOpMode.telemetry.addData(">", "Hardware Initialized");
-        myOpMode.telemetry.update();
     }
 
     /**
@@ -175,6 +176,7 @@ public class RobotHardware {
         myOpMode.telemetry.update();
             */
     }
+}
 
     // public void activateSweeper() { 
     //     highBrush.setPower(0.5 + BRUSH_SPEED);
@@ -208,13 +210,14 @@ public class RobotHardware {
         // We need to write in the opmode: if 
     }
     public void standUp(String height) {
+        double waitTime = runtime.milliseconds();
         // Need to get measurements for how much we need the feet
         // to expand during each of these phases (combine like ones later)
         if (height == "FullUp") {
             // max expand is 7.5
             leftFoot.setPower  (1.0);
             rightFoot.setPower (1.0);
-            // sleep(FULL_FEET_LIFT_SPEED);
+            waitTime += FULL_FEET_LIFT_SPEED;
         } else if (height == "LowBasketUp") {
             leftFoot.setPower  (1.0);
             rightFoot.setPower (1.0);
@@ -251,10 +254,11 @@ public class RobotHardware {
             rightFoot.setPower (-1.0);
             // sleep(FULL_SCREW_LIFT_SPEED);
     }
-    
+}
     public void screwTurnPower(double spin) {
         screwTurn.setPower(spin);
     }
+    
 
     public void toggleDepositDoor(String power) {
         if (power == "on") {
@@ -264,18 +268,21 @@ public class RobotHardware {
         }
     }
     
-    public void telemetryUpdate() {
+    public ArrayList telemetryUpdate() {
+        ArrayList<String[]> returnVal = new ArrayList<>();
         for (DcMotor thisMotor: allMotors) {
-            telemetry.addData("MotorSpeed", thisMotor.getPower());
+            String[] push = {"MotorSpeed", Double.toString(thisMotor.getPower())};
+            returnVal.add(push);
         }
         for (CRServo thisServo: allCRServos) {
-            telemetry.addData("ServoPower", thisServo.getPower());
+            String[] push = {"ServoPower", Double.toString(thisServo.getPower())};
+            returnVal.add(push);
         }
         for (Servo   thisServo: allServos) {
-            telemetry.addData("ServoPosition", thisServo.getPosition());
+            String[] push = {"ServoPosition", Double.toString(thisServo.getPosition())};
+            returnVal.add(push);
         }
-        telemetry.addData(runtime);
-        telemetry.update();
+        return returnVal;
     }
 
     //public void staticvar(String wantedVar) {
