@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+import java.lang.Thread;
 public class RobotHardware {
     
     public LinearOpMode myOpMode = null;
@@ -25,8 +25,8 @@ public class RobotHardware {
     public DcMotor rightFrontWheel = null;
     public DcMotor rightBackWheel = null;
 
-    public DcMotor leftLeg  = null; //Motors for the feet
-    public DcMotor rightLeg = null;
+    public DcMotor leftFoot  = null; //Motors for the feet
+    public DcMotor rightFoot = null;
     
     public DcMotor screwLift = null; //Motors for the archimedes screw
     public DcMotor screwTurn = null;
@@ -43,7 +43,7 @@ public class RobotHardware {
 
     private double  BRUSH_SPEED           = 0.5; //Set betwwen 0.0 and 0.5
     private double  REACH_SPEED           = 0.3;
-    private boolean BRUSH_MOVING          = false;
+    private boolean brushMoving           = false;
     private double  FULL_FEET_LIFT_SPEED  = 2000; // miliseconds, not tested or measured
     private double  LOW_FEET_LIFT_SPEED   = 1000; // miliseconds, not tested or measured
     private double  FULL_SCREW_LIFT_SPEED = 2000; // miliseconds, not tested or measured
@@ -101,18 +101,16 @@ public class RobotHardware {
         allMotors.add(rightBackWheel);
         allMotors.add(screwLift);
         allMotors.add(screwTurn);
-        allMotors.add(leftLeg);
-        allMotors.add(rightLeg);
-        allMotors.add(leftLeg);
-        allMotors.add(rightLeg);
+        allMotors.add(leftFoot);
+        allMotors.add(rightFoot);
 
-        allCRServos.add(highFingers);
-        allCRServos.add(lowFingers);
+        allCRServos.add(highFinger);
+        allCRServos.add(lowFinger);
         allCRServos.add(leftSweepOutServo);
         allCRServos.add(rightSweepOutServo);
 
         allServos.add(screwDoor);
-        // Don't we need teh Touch Sensors here? =======================================================
+        // Don't we need the Touch Sensors here? =======================================================
         
         myOpMode.telemetry.addData(">", "Hardware Initialized");
         myOpMode.telemetry.update();
@@ -187,17 +185,17 @@ public class RobotHardware {
     //     lowBrush.setPower (0.5);
     // }
 
-    public void toggleFingers(string power) {
+    public void toggleFingers(String power) {
         if (power == "on") {
-        highFingers.setPower(0.5 + BRUSH_SPEED);
-        lowFingers.setPower (0.5 - BRUSH_SPEED);
+        highFinger.setPower(0.5 + BRUSH_SPEED);
+        lowFinger.setPower (0.5 - BRUSH_SPEED);
         } else {
-        highFingers.setPower(0.5);
-        lowFingers.setPower (0.5);
+        highFinger.setPower(0.5);
+        lowFinger.setPower (0.5);
         }
     }
     public void armExpand() { 
-        if (!BRUSH_MOVING){
+        if (!brushMoving){
             if (brushExtended.isPressed()){
                 leftSweepOutServo.setPower  (0.5 + REACH_SPEED);
                 rightSweepOutServo.setPower (0.5 - REACH_SPEED);
@@ -209,56 +207,56 @@ public class RobotHardware {
         }
         // We need to write in the opmode: if 
     }
-    public void standUp(string height) {
+    public void standUp(String height) {
         // Need to get measurements for how much we need the feet
         // to expand during each of these phases (combine like ones later)
         if (height == "FullUp") {
             // max expand is 7.5
-            leftLeg.setPower  (1.0);
-            rightLeg.setPower (1.0);
-            sleep(FULL_FEET_LIFT_SPEED);
+            leftFoot.setPower  (1.0);
+            rightFoot.setPower (1.0);
+            // sleep(FULL_FEET_LIFT_SPEED);
         } else if (height == "LowBasketUp") {
-            leftLeg.setPower  (1.0);
-            rightLeg.setPower (1.0);
-            sleep(LOW_FEET_LIFT_SPEED);
+            leftFoot.setPower  (1.0);
+            rightFoot.setPower (1.0);
+            // sleep(LOW_FEET_LIFT_SPEED);
         } else if (height == "RestFromLow") {
-            leftLeg.setPower  (-1.0);
-            rightLeg.setPower (-1.0);
-            sleep(LOW_FEET_LIFT_SPEED);
+            leftFoot.setPower  (-1.0);
+            rightFoot.setPower (-1.0);
+            // sleep(LOW_FEET_LIFT_SPEED);
         } else if (height == "RestFromFull") {
-            leftLeg.setPower  (-1.0);
-            rightLeg.setPower (-1.0);
-            sleep(FULL_FEET_LIFT_SPEED);
+            leftFoot.setPower  (-1.0);
+            rightFoot.setPower (-1.0);
+            // sleep(FULL_FEET_LIFT_SPEED);
         }
     }
     
-    public void liftScrew(string height) {
+    public void liftScrew(String height) {
         // We need measurements for how high we need the screw to go
         // during each of these scenarios (combine like heights later)
         if (height == "FullUp") {
             // max expand is 7.5
-            leftLeg.setPower  (1.0);
-            rightLeg.setPower (1.0);
-            sleep(FULL_SCREW_LIFT_SPEED);
+            leftFoot.setPower  (1.0);
+            rightFoot.setPower (1.0);
+            // sleep(FULL_SCREW_LIFT_SPEED);
         } else if (height == "LowBasketUp") {
-            leftLeg.setPower  (1.0);
-            rightLeg.setPower (1.0);
-            sleep(LOW_SCREW_LIFT_SPEED);
+            leftFoot.setPower  (1.0);
+            rightFoot.setPower (1.0);
+            // sleep(LOW_SCREW_LIFT_SPEED);
         } else if (height == "RestFromLow") {
-            leftLeg.setPower  (-1.0);
-            rightLeg.setPower (-1.0);
-            sleep(LOW_SCREW_LIFT_SPEED);
+            leftFoot.setPower  (-1.0);
+            rightFoot.setPower (-1.0);
+            // sleep(LOW_SCREW_LIFT_SPEED);
         } else if (height == "RestFromFull") {
-            leftLeg.setPower  (-1.0);
-            rightLeg.setPower (-1.0);
-            sleep(FULL_SCREW_LIFT_SPEED);
+            leftFoot.setPower  (-1.0);
+            rightFoot.setPower (-1.0);
+            // sleep(FULL_SCREW_LIFT_SPEED);
     }
     
     public void screwTurnPower(double spin) {
         screwTurn.setPower(spin);
     }
 
-    public void toggleDepositDoor(string power) {
+    public void toggleDepositDoor(String power) {
         if (power == "on") {
             screwDoor.setPosition(180); //untested
         } else {
@@ -280,14 +278,14 @@ public class RobotHardware {
         telemetry.update();
     }
 
-    public void staticvar(string wantedVar) {
-        if (wantedVar == "PANEL") {
-            return PANEL;
-        } else if (wantedVar == "INCHES") {
-            return INCH;
-        } else {
-            telemetry.addData("Couldn't get that variable's data from the hardware");
-            telemetry.update();
-        }
-    }  
+    //public void staticvar(String wantedVar) {
+    //    if (wantedVar == "PANEL") {
+    //        return PANEL;
+    //    } else if (wantedVar == "INCHES") {
+    //        return INCH;
+    //    } else {
+    //        telemetry.addData("Couldn't get that variable's data from the hardware");
+    //        telemetry.update();
+    //    }
+    //}  
 }
