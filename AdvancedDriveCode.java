@@ -46,6 +46,10 @@ public class AdvancedDriveCode extends LinearOpMode {
                     // add code to switch light color - Flash Both
                 }
             }
+
+            if (gamepad2.a)
+
+            if (gamepad2.b)
             
             // buttons coded: driving joysticks, swap
             // buttons to be coded: 
