@@ -51,7 +51,7 @@ public class AutoWithHardware extends LinearOpMode {
             driveRobot(0.0, 0.0, 0.0); 
             sleep(100);
                 
-            robot.standUp("FullUp"); // Stand up 18 is a random distance that I created as a test value
+            robot.standUp("FullUp"); 
             robot.liftScrew("FullUp");  
             sleep(100);
 
@@ -60,7 +60,10 @@ public class AutoWithHardware extends LinearOpMode {
             robot.toggleDepositDoor("off")  // Close
 
             robot.spinScrew(0.0); // Stop screw spinning
-            
+
+            robot.standUp("RestFromFull");  // Drop down
+            robot.liftScrew("RestFromFull");  
+            sleep(100);
         }
     }
 }
