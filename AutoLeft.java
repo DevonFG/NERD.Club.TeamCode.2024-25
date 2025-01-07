@@ -48,9 +48,11 @@ public class AutoWithHardware extends LinearOpMode {
             driveRobot(0.0, 0.0, 0.0); 
             sleep(100);
                 
-            robot.standUp(7.5); // Stand up 18 is a random distance that I created as a test value
-            robot.liftScrew(7.5);  
+            robot.standUp("FullUp"); // Stand up 18 is a random distance that I created as a test value
+            robot.liftScrew("FullUp");  
             sleep(100);
+
+            
             
         }
     }
