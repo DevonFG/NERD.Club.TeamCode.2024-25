@@ -37,8 +37,7 @@ public class AutoWithHardware extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-      /*
-
+            
             robot.driveRobot(0.0, 1.0, 0.0); // (drive, strafe, turn) Get away from wall
             sleep(2*INCH_TO_TICK);
             driveRobot(0.0, 0.0, 0.0); 
@@ -52,11 +51,6 @@ public class AutoWithHardware extends LinearOpMode {
             robot.standUp(7.5); // Stand up 18 is a random distance that I created as a test value
             robot.liftScrew(7.5);  
             sleep(100);
-
-
-
-
-      */
             
         }
     }
