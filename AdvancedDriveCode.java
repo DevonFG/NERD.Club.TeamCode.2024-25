@@ -41,16 +41,30 @@ public class AdvancedDriveCode extends LinearOpMode {
                     buttonsMode = "Fingers";
                     // add code to switch light color - Green
                 } else {
-                    telemetry.addData("Mode Unknown ERROR", null);
+                    telemetry.addData("Mode Unknown SWAP ERROR", null);
                     telemetry.update();
                     // add code to switch light color - Flash Both
                 }
             }
 
-            if (gamepad2.a)
+            if (gamepad2.a) {
+              if (buttonsMode == "Fingers") {
+                
+              } else if (buttonsMode == "ScrewBrush") {
+                
+              } else {
+                telemetry.addData("Mode Unknown BUTTON ERROR");
+                telemetry.update();
+                // add code to flash both light colors
+            }
 
-            if (gamepad2.b)
-            
+            if (gamepad2.b) {
+              
+            }
+
+            if (gamepad2.y) {
+              
+            }
             // buttons coded: driving joysticks, swap
             // buttons to be coded: 
             // CONTROLLER 2
