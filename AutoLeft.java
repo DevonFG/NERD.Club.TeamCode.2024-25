@@ -64,6 +64,9 @@ public class AutoWithHardware extends LinearOpMode {
             robot.standUp("RestFromFull");  // Drop down
             robot.liftScrew("RestFromFull");  
             sleep(100);
+
+            robot.driveRobot(0.0, 0.0, 0.0) // Will be spinning toward the observation zone
+            sleep()
         }
     }
 }
