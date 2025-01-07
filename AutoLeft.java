@@ -39,9 +39,19 @@ public class AutoWithHardware extends LinearOpMode {
         while (opModeIsActive()) {
       /*
 
-
-      //Write Code Here
-
+            robot.driveRobot(0.0, 1.0, 0.0); // (drive, strafe, turn) Get away from wall
+            sleep(2*INCH_TO_TICK);
+            driveRobot(0.0, 0.0, 0.0); 
+            sleep(100);
+                
+            robot.driveRobot(1.0, 0.0, 0.0); // Drive to net Zone/baskets.  Can change based on where the robot starts. Currently 12 inches from front of robot
+            sleep(12*INCH_TO_TICK);
+            driveRobot(0.0, 0.0, 0.0); 
+            sleep(100);
+                
+            robot.standUp(7.5); // Stand up 18 is a random distance that I created as a test value
+            robot.liftScrew(7.5);  
+            sleep(100);
 
 
 
