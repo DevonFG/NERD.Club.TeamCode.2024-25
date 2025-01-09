@@ -262,7 +262,18 @@ public class RobotHardware {
             rightFoot.setPower (-1.0);
             // sleep(FULL_SCREW_LIFT_SPEED);
     }
-    
+
+            public void liftScrew(int millis) {
+        // Need to get measurements for how much we need the feet
+        // to expand during each of these phases (combine like ones later)
+        double stoptime = runtime.milliseconds() + Math.abs(millis);
+        leftFoot.setPower  (1.0 * (Math.abs(millis)/millis));
+        rightFoot.setPower (1.0 * (Math.abs(millis)/millis));
+        while(runtime.milliseconds()<stoptime){
+        }
+        leftFoot.setPower  (0);
+        rightFoot.setPower (0);
+    }
     public void screwTurnPower(double spin) {
         screwTurn.setPower(spin);
     }
