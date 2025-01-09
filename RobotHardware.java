@@ -233,24 +233,13 @@ public class RobotHardware {
     public void standUp(int millis) {
         // Need to get measurements for how much we need the feet
         // to expand during each of these phases (combine like ones later)
-        if (height == "FullUp") {
-            // max expand is 7.5
-            leftFoot.setPower  (1.0);
-            rightFoot.setPower (1.0);
-            // sleep(FULL_FEET_LIFT_SPEED);
-        } else if (height == "LowBasketUp") {
-            leftFoot.setPower  (1.0);
-            rightFoot.setPower (1.0);
-            // sleep(LOW_FEET_LIFT_SPEED);
-        } else if (height == "RestFromLow") {
-            leftFoot.setPower  (-1.0);
-            rightFoot.setPower (-1.0);
-            // sleep(LOW_FEET_LIFT_SPEED);
-        } else if (height == "RestFromFull") {
-            leftFoot.setPower  (-1.0);
-            rightFoot.setPower (-1.0);
-            // sleep(FULL_FEET_LIFT_SPEED);
+        double stoptime = runtime.milliseconds() + Math.abs(millis);
+        leftFoot.setPower  (1.0 * (Math.abs(millis)/millis));
+        rightFoot.setPower (1.0 * (Math.abs(millis)/millis));
+        while(runtime.milliseconds()<stoptime){
         }
+        leftFoot.setPower  (0);
+        rightFoot.setPower (0);
     }
     public void liftScrew(String height) {
         // We need measurements for how high we need the screw to go
