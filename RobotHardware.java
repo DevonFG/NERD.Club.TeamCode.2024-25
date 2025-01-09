@@ -208,13 +208,14 @@ public class RobotHardware {
         // We need to write in the opmode: if 
     }
     public void standUp(String height) {
+        private double stopTime = runtime.milliseconds();
         // Need to get measurements for how much we need the feet
         // to expand during each of these phases (combine like ones later)
         if (height == "FullUp") {
             // max expand is 7.5
             leftFoot.setPower  (1.0);
             rightFoot.setPower (1.0);
-            // sleep(FULL_FEET_LIFT_SPEED);
+            stopTime += FULL_FEET_LIFT_SPEED;
         } else if (height == "LowBasketUp") {
             leftFoot.setPower  (1.0);
             rightFoot.setPower (1.0);
@@ -227,6 +228,8 @@ public class RobotHardware {
             leftFoot.setPower  (-1.0);
             rightFoot.setPower (-1.0);
             // sleep(FULL_FEET_LIFT_SPEED);
+        }
+        while (stopTime < runtime.milliseconds()) {
         }
     }
     
