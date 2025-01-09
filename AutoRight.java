@@ -3,6 +3,8 @@ import org.firstinspires.ftc.teamcode.AutonomousHardware;
 @Autonomous(name="RightSideBasicAutonomous", group="9044.NERD.")
 public class Autonomous extends LinearOpMode {
 
+    private double PANEL = robot.staticvar("PANEL");
+    
     @Override
     public void runOpMode() {
       
@@ -11,11 +13,18 @@ public class Autonomous extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-
+            runtime.reset();
+            private double stopTime = runtime.milliseconds();
+            private int step = 0;
+            if (runtime >= 30000) {
+                robot.driveRobot(0.0, 0.0, 0.0);
+                robot.toggleFingers("off");
+                Thread.sleep(5000);
+                telemetry.addData("robot stopped for 5 seconds", null);
             // arch screw spin normal
             // arch screw spin off
             robot.driveRobot(1.0, 0.0, 0.0);
-            delay(PANEL*0.6);
+            Thread.sleep(PANEL*0.6);
             // strafe left 1 
             // arch scew spin inverse
             // arch scew spin off
