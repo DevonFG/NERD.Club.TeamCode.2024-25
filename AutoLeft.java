@@ -52,7 +52,7 @@ public class AutoWithHardware extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
         
-            robot.spinScrew(1.0); // Whatever full speed is
+            robot.screwTurnPower(1.0); // Whatever full speed is
             sleep(100);
             
             robot.driveRobot(0.0, 1.0, 0.0); // (drive, strafe, turn) Get away from wall
@@ -73,7 +73,7 @@ public class AutoWithHardware extends LinearOpMode {
             sleep(1000);
             robot.toggleDepositDoor("off")  // Close
 
-            robot.spinScrew(0.0); // Stop screw spinning
+            robot.screwTurnPower(0.0); // Stop screw spinning
 
             robot.standUp("RestFromFull");  // Drop down
             robot.liftScrew("RestFromFull");  
@@ -84,7 +84,7 @@ public class AutoWithHardware extends LinearOpMode {
             robot.driveRobot(0.0, 0.0, 0.0);
             sleep(100);
 
-            robot.spinScrew(1.0); //Start to spin the screw to pick up the sample
+            robot.screwTurnPower(0.5); //Start to spin the screw to pick up the sample
 
             robot.driveRobot(1.0, 0.0, 0.0);
             sleep(33*INCH_TO_TICK);  // Untested value drive towards sample and past to be next to ascent zone
@@ -101,7 +101,8 @@ public class AutoWithHardware extends LinearOpMode {
             robot.driveRobot(0.0, 0.0, 0.0);
             sleep(100);
 
-            robot.spinScrew(0.0); //Stop the screw from spinning and hope that the sample stays at the top
+            robot.screwTurnPower(0.0); //Stop the screw from spinning and hope that the sample stays at the top
+            
             // The next line is to touch the 1st ascent zone bar, but that hasn't been fully planned on the robot, so it could be scrapped.
             // The robot may also be able to hit the bar without standing up, but idk
             robot.standUp("FullUp"); 
