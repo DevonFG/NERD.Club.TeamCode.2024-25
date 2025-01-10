@@ -22,6 +22,7 @@ public class AdvancedDriveCode extends LinearOpMode {
         double turn;
         String power;
         String buttonsMode = "Fingers";
+        float deadZone = .2;
         
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -60,40 +61,68 @@ public class AdvancedDriveCode extends LinearOpMode {
             
             if (buttonsMode == "ScrewBrush"){ 
               if (gamepad2.b) {
-                toggleScrewTurn("off");
+                robot.toggleScrewTurn("off");
               } 
               if (gamepad2.y) {
-                toggleScrewTurn("normal");
+                robot.toggleScrewTurn("normal");
               }
               if (gamepad2.x) {
-                toggleScrewTurn("inverse");
+                robot.toggleScrewTurn("inverse");
               }
             }
             
             if (buttonsMode == "Fingers"){ 
               if (gamepad2.b) {
-                toggleFingers("off");
+                robot.toggleFingers("off");
               } 
               if (gamepad2.y) {
-                toggleFingers("normal");
+                robot.toggleFingers("normal");
               }
               if (gamepad2.x) {
-                toggleFingers("inverse");
+                robot.toggleFingers("inverse");
               }
             }
 
             if (gamepad1.y) {
-              toggleFingers("off");
+              robot.toggleFingers("off");
             }
               
             if (gamepad1.x) {
-              toggleScrewBrush("off");
+              robot.toggleScrewBrush("off");
             }
 
             if (gamepad1.dpad_up) {
-
+             robot.standUp("FullUp");
             }
               
+            if (gamepad1.dpad_down) {
+              robot.standUp("RestFromFull");
+            }
+
+            if (gamepad1.dpad_left) {
+              robot.standUp("LowBasketUp");
+            }
+
+            if (gamepad1.dpad_right) {
+              robot.standUp("RestFromLow");
+            }
+
+            if (gamepad1.left_trigger > deadZone) {
+              robot.standUp(gamepad1.left_trigger);
+            }
+
+            if (gamepad1.right_trigger > deadZone) {
+              robot.standUp(-gamepad1.right_trigger);
+            }
+
+            if (gamepad2.left_bumper){
+              robot.armExpand();
+            }
+
+            if (gamepad2.right_trigger > deadZone){
+              
+            }
+            
             // buttons coded: driving joysticks, swap, Screw brush and fingers spin.
             // buttons to be coded: 
             // CONTROLLER 2
