@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.lang.Thread;
+
 public class RobotHardware {
     
     public LinearOpMode myOpMode = null;
@@ -31,8 +32,7 @@ public class RobotHardware {
     public DcMotor screwLift = null; //Motors for the archimedes screw
     public DcMotor screwTurn = null;
 
-    public CRServo highFinger = null; //Servos for the brush
-    public CRServo lowFinger  = null;
+    public CRServo fingers = null; //Servos for the arms & fingers
     public CRServo leftSweepOutServo = null;
     public CRServo rightSweepOutServo = null;
 
@@ -185,28 +185,48 @@ public class RobotHardware {
     //     lowBrush.setPower (0.5);
     // }
 
+    public void checkEverything() {
+        if (brushExtended.isPressed() && brushMoving) {
+            brushMoving = false;
+            leftSweepOutServo.setPower(0.5);
+            rightSweepOutServo.setPower(0.5);
+        } else if (brushRetracted) {
+            brushMoving = false;
+            leftSweepOutServo.setPower(0.5);
+            rightSweepOutServo.setPower(0.5);
+        } else {
+            brushMoving = true;
+    }
+    
     public void toggleFingers(String power) {
         if (power == "normal") {
-        highFinger.setPower(0.5 + BRUSH_SPEED);
+        fingers.setPower(0.5 + BRUSH_SPEED);
         } else if (power == "inverse") {
         fingers.setPower(0.5 - BRUSH_SPEED);
         } else {
-        highFinger.setPower(0.5);
-        lowFinger.setPower (0.5);
+        fingers.setPower(0.5);
         }
     }
-    public void armExpand() { 
-        if (!brushMoving){
-            if (brushExtended.isPressed()){
-                leftSweepOutServo.setPower  (0.5 + REACH_SPEED);
-                rightSweepOutServo.setPower (0.5 - REACH_SPEED);
-            } else {
-                leftSweepOutServo.setPower  (0.5 - REACH_SPEED);
-                rightSweepOutServo.setPower (0.5 + REACH_SPEED);
-            }
-            brushMoving = true;
+
+    public void toggleScrewTurn(String power) {
+        if (power == "normal") {
+        screwTurn.setPower(0.5 + BRUSH_SPEED);
+        } else if (power == "inverse") {
+        screwTurn.setPower(0.5 - BRUSH_SPEED);
+        } else {
+        screwTurn.setPower(0.5);
         }
-        // We need to write in the opmode: if 
+    }
+    
+    public void armExpand(String power) { 
+        if (power == "expand" && !brushMoving) {
+            leftSweepOutServo.setPower (0.5 + REACH_SPEED);
+            rightSweepOutServo.setPower(0.5 - REACH_SPEED);
+        } else if (power == "retract" && !brushMoving) {
+            leftSweepOutServo.setPower (0.5 - REACH_SPEED);
+            rightSweepOutServo.setPower(0.5 + REACH_SPEED);
+        }
+        checkEverything();
     }
     public void standUp(String height) {
         private double stopTime = runtime.milliseconds();
@@ -233,6 +253,16 @@ public class RobotHardware {
         while (stopTime < runtime.milliseconds()) {
         }
     }
+
+    public void standUp(double speedValue) {
+        if (speedValue >= 0.3) {
+            leftFoot.setPower (speedValue);
+            rightFoot.setPower(speedValue);
+        } else {
+            leftFoot.setPower (0.0);
+            rightFoot.setPower(0.0);
+        }
+    }
     
     public void liftScrew(String height) {
         private double stopTime = runtime.milliseconds();
@@ -240,27 +270,27 @@ public class RobotHardware {
         // during each of these scenarios (combine like heights later)
         if (height == "FullUp") {
             // max expand is 7.5
-            leftFoot.setPower  (1.0);
-            rightFoot.setPower (1.0);
+            screwLift.setPower  (1.0);
             stopTime += FULL_SCREW_LIFT_SPEED;
         } else if (height == "LowBasketUp") {
-            leftFoot.setPower  (1.0);
-            rightFoot.setPower (1.0);
+            screwLift.setPower  (1.0);
             stopTime += LOW_SCREW_LIFT_SPEED;
         } else if (height == "RestFromLow") {
-            leftFoot.setPower  (-1.0);
-            rightFoot.setPower (-1.0);
+            screwLift.setPower  (-1.0);
             stopTime += LOW_SCREW_LIFT_SPEED;
         } else if (height == "RestFromFull") {
-            leftFoot.setPower  (-1.0);
-            rightFoot.setPower (-1.0);
+            screwLift.setPower  (-1.0);
             stopTime += FULL_SCREW_LIFT_SPEED;
     }
-    
-    public void screwTurnPower(double spin) {
-        screwTurn.setPower(spin);
-    }
 
+    public void liftScrew(double speedValue) {
+        if (speedValue >= 0.3) {
+            screwLift.setPower (speedValue);
+        } else {
+            screwLift.setPower (0.0);
+        }
+    }
+    
     public void toggleDepositDoor(String power) {
         if (power == "on") {
             screwDoor.setPosition(180); //untested
