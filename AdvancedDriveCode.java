@@ -49,23 +49,52 @@ public class AdvancedDriveCode extends LinearOpMode {
 
             if (gamepad2.a) {
               if (buttonsMode == "Fingers") {
-                
+                buttonsMode = "ScrewBrush";
               } else if (buttonsMode == "ScrewBrush") {
-                
+                buttonsMode = "Fingers";
               } else {
                 telemetry.addData("Mode Unknown BUTTON ERROR");
                 telemetry.update();
                 // add code to flash both light colors
             }
-
-            if (gamepad2.b) {
-              
+            
+            if (buttonsMode == "ScrewBrush"){ 
+              if (gamepad2.b) {
+                toggleScrewTurn("off");
+              } 
+              if (gamepad2.y) {
+                toggleScrewTurn("normal");
+              }
+              if (gamepad2.x) {
+                toggleScrewTurn("inverse");
+              }
+            }
+            
+            if (buttonsMode == "Fingers"){ 
+              if (gamepad2.b) {
+                toggleFingers("off");
+              } 
+              if (gamepad2.y) {
+                toggleFingers("normal");
+              }
+              if (gamepad2.x) {
+                toggleFingers("inverse");
+              }
             }
 
-            if (gamepad2.y) {
-              
+            if (gamepad1.y) {
+              toggleFingers("off");
             }
-            // buttons coded: driving joysticks, swap
+              
+            if (gamepad1.x) {
+              toggleScrewBrush("off");
+            }
+
+            if (gamepad1.dpad_up) {
+
+            }
+              
+            // buttons coded: driving joysticks, swap, Screw brush and fingers spin.
             // buttons to be coded: 
             // CONTROLLER 2
             // arch screw controls - dpad
