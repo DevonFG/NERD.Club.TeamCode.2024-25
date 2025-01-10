@@ -186,9 +186,10 @@ public class RobotHardware {
     // }
 
     public void toggleFingers(String power) {
-        if (power == "on") {
+        if (power == "normal") {
         highFinger.setPower(0.5 + BRUSH_SPEED);
-        lowFinger.setPower (0.5 - BRUSH_SPEED);
+        } else if (power == "inverse") {
+        fingers.setPower(0.5 - BRUSH_SPEED);
         } else {
         highFinger.setPower(0.5);
         lowFinger.setPower (0.5);
@@ -219,40 +220,41 @@ public class RobotHardware {
         } else if (height == "LowBasketUp") {
             leftFoot.setPower  (1.0);
             rightFoot.setPower (1.0);
-            // sleep(LOW_FEET_LIFT_SPEED);
+            stopTime += LOW_FEET_LIFT_SPEED;
         } else if (height == "RestFromLow") {
             leftFoot.setPower  (-1.0);
             rightFoot.setPower (-1.0);
-            // sleep(LOW_FEET_LIFT_SPEED);
+            stopTime += LOW_FEET_LIFT_SPEED;
         } else if (height == "RestFromFull") {
             leftFoot.setPower  (-1.0);
             rightFoot.setPower (-1.0);
-            // sleep(FULL_FEET_LIFT_SPEED);
+            stopTime += FULL_FEET_LIFT_SPEED;
         }
         while (stopTime < runtime.milliseconds()) {
         }
     }
     
     public void liftScrew(String height) {
+        private double stopTime = runtime.milliseconds();
         // We need measurements for how high we need the screw to go
         // during each of these scenarios (combine like heights later)
         if (height == "FullUp") {
             // max expand is 7.5
             leftFoot.setPower  (1.0);
             rightFoot.setPower (1.0);
-            // sleep(FULL_SCREW_LIFT_SPEED);
+            stopTime += FULL_SCREW_LIFT_SPEED;
         } else if (height == "LowBasketUp") {
             leftFoot.setPower  (1.0);
             rightFoot.setPower (1.0);
-            // sleep(LOW_SCREW_LIFT_SPEED);
+            stopTime += LOW_SCREW_LIFT_SPEED;
         } else if (height == "RestFromLow") {
             leftFoot.setPower  (-1.0);
             rightFoot.setPower (-1.0);
-            // sleep(LOW_SCREW_LIFT_SPEED);
+            stopTime += LOW_SCREW_LIFT_SPEED;
         } else if (height == "RestFromFull") {
             leftFoot.setPower  (-1.0);
             rightFoot.setPower (-1.0);
-            // sleep(FULL_SCREW_LIFT_SPEED);
+            stopTime += FULL_SCREW_LIFT_SPEED;
     }
     
     public void screwTurnPower(double spin) {
@@ -281,14 +283,14 @@ public class RobotHardware {
         telemetry.update();
     }
 
-    //public void staticvar(String wantedVar) {
-    //    if (wantedVar == "PANEL") {
-    //        return PANEL;
-    //    } else if (wantedVar == "INCHES") {
-    //        return INCH;
-    //    } else {
-    //        telemetry.addData("Couldn't get that variable's data from the hardware");
-    //        telemetry.update();
-    //    }
-    //}  
+    public void staticvar(String wantedVar) {
+       if (wantedVar == "PANEL") {
+           return PANEL;
+       } else if (wantedVar == "INCHES") {
+           return INCH;
+       } else {
+           telemetry.addData("Couldn't get that variable's data from the hardware", null);
+           telemetry.update();
+       }
+    }  
 }
