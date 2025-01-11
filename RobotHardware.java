@@ -218,16 +218,20 @@ public class RobotHardware {
         }
     }
     
-    public void armExpand(String power) { 
-        if (power == "expand" && !brushMoving) {
-            leftSweepOutServo.setPower (0.5 + REACH_SPEED);
-            rightSweepOutServo.setPower(0.5 - REACH_SPEED);
-        } else if (power == "retract" && !brushMoving) {
-            leftSweepOutServo.setPower (0.5 - REACH_SPEED);
-            rightSweepOutServo.setPower(0.5 + REACH_SPEED);
+    public void armExpand() { 
+        if (!brushMoving){
+            if (brushExtended.isPressed()){
+                leftSweepOutServo.setPower  (0.5 + REACH_SPEED);
+                rightSweepOutServo.setPower (0.5 - REACH_SPEED);
+            } else {
+                leftSweepOutServo.setPower  (0.5 - REACH_SPEED);
+                rightSweepOutServo.setPower (0.5 + REACH_SPEED);
+            }
+            brushMoving = true;
         }
         checkEverything();
     }
+
     public void standUp(String height) {
         private double stopTime = runtime.milliseconds();
         // Need to get measurements for how much we need the feet
