@@ -3,6 +3,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -191,7 +193,7 @@ public class RobotHardware {
             brushMoving = false;
             leftSweepOutServo.setPower(0.5);
             rightSweepOutServo.setPower(0.5);
-        } else if (brushRetracted) {
+        } else if (brushRetracted.isPressed() && brushMoving) {
             brushMoving = false;
             leftSweepOutServo.setPower(0.5);
             rightSweepOutServo.setPower(0.5);
@@ -235,7 +237,7 @@ public class RobotHardware {
     }
 
     public void standUp(String height) {
-        private double stopTime = runtime.milliseconds();
+        double stopTime = runtime.milliseconds();
         // Need to get measurements for how much we need the feet
         // to expand during each of these phases (combine like ones later)
         if (height == "FullUp") {
@@ -271,7 +273,7 @@ public class RobotHardware {
     }
     
     public void liftScrew(String height) {
-        private double stopTime = runtime.milliseconds();
+        double stopTime = runtime.milliseconds();
         // We need measurements for how high we need the screw to go
         // during each of these scenarios (combine like heights later)
         if (height == "FullUp") {
@@ -288,7 +290,7 @@ public class RobotHardware {
             screwLift.setPower  (-1.0);
             stopTime += FULL_SCREW_LIFT_SPEED;
     }
-
+}
     public void liftScrew(double speedValue) {
         if (speedValue >= 0.3) {
             screwLift.setPower (speedValue);
@@ -307,15 +309,15 @@ public class RobotHardware {
     
     public void telemetryUpdate() {
         for (DcMotor thisMotor: allMotors) {
-            telemetry.addData("MotorSpeed", thisMotor.getPower());
+            myOpMode.telemetry.addData("MotorSpeed", thisMotor.getPower());
         }
         for (CRServo thisServo: allCRServos) {
-            telemetry.addData("ServoPower", thisServo.getPower());
+            myOpMode.telemetry.addData("ServoPower", thisServo.getPower());
         }
         for (Servo   thisServo: allServos) {
-            telemetry.addData("ServoPosition", thisServo.getPosition());
+            myOpMode.telemetry.addData("ServoPosition", thisServo.getPosition());
         }
-        myOpMode.telemetry.addData(runtime.toString, null);
+        myOpMode.telemetry.addData(runtime.toString(), null);
         myOpMode.telemetry.update();
     }
 
