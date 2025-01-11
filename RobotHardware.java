@@ -86,11 +86,13 @@ public class RobotHardware {
 
         screwLift           = myOpMode.hardwareMap.get(DcMotor.class, "archimedes");
         screwTurn           = myOpMode.hardwareMap.get(DcMotor.class, "brush");
-
-        highFinger          = myOpMode.hardwareMap.get(CRServo.class, "highArmFinger");
-        lowFinger           = myOpMode.hardwareMap.get(CRServo.class, "lowArmFinger");
+        
+        fingers             = myOpMode.hardwareMap.get(CRServo.class, "armFingers");
         leftSweepOutServo   = myOpMode.hardwareMap.get(CRServo.class, "leftSweepOut");
         rightSweepOutServo  = myOpMode.hardwareMap.get(CRServo.class, "rightSweepOut");
+
+        brushExtended       = myOpMode.hardwareMap.get(TouchSensor.class, "touchSensor1");
+        brushRetracted      = myOpMode.hardwareMap.get(TouchSensor.class, "touchSensor2");
 
         //Need to put into config file
         screwDoor = myOpMode.hardwareMap.get(Servo.class, "archimedesScrewDoor");
@@ -104,8 +106,7 @@ public class RobotHardware {
         allMotors.add(leftFoot);
         allMotors.add(rightFoot);
 
-        allCRServos.add(highFinger);
-        allCRServos.add(lowFinger);
+        allCRServos.add(fingers);
         allCRServos.add(leftSweepOutServo);
         allCRServos.add(rightSweepOutServo);
 
@@ -162,7 +163,7 @@ public class RobotHardware {
             rightFrontPower /= min;
             leftBackPower   /= min;
             rightBackPower  /= min;
-
+        }
     // Send calculated power to wheels
         leftFrontWheel.setPower(leftFrontPower);
         rightFrontWheel.setPower(rightFrontPower);
@@ -196,8 +197,9 @@ public class RobotHardware {
             rightSweepOutServo.setPower(0.5);
         } else {
             brushMoving = true;
+        }
     }
-    
+        
     public void toggleFingers(String power) {
         if (power == "normal") {
         fingers.setPower(0.5 + BRUSH_SPEED);
@@ -313,18 +315,18 @@ public class RobotHardware {
         for (Servo   thisServo: allServos) {
             telemetry.addData("ServoPosition", thisServo.getPosition());
         }
-        telemetry.addData(runtime);
-        telemetry.update();
+        myOpMode.telemetry.addData(runtime.toString, null);
+        myOpMode.telemetry.update();
     }
 
-    public void staticvar(String wantedVar) {
-       if (wantedVar == "PANEL") {
-           return PANEL;
-       } else if (wantedVar == "INCHES") {
-           return INCH;
-       } else {
-           telemetry.addData("Couldn't get that variable's data from the hardware", null);
-           telemetry.update();
-       }
-    }  
+    // public void staticvar(String wantedVar) {
+    //    if (wantedVar == "PANEL") {
+    //        return PANEL;
+    //    } else if (wantedVar == "INCHES") {
+    //        return INCH;
+    //    } else {
+    //        telemetry.addData("Couldn't get that variable's data from the hardware", null);
+    //        telemetry.update();
+    //    }
+    // }  
 }
