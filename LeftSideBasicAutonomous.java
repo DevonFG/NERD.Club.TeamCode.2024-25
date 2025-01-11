@@ -1,18 +1,19 @@
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.robot.Robot;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.HardwareFile2024;
-// import org.firstinspires.ftc.teamcode.AutonomousHardware;
+import org.firstinspires.ftc.teamcode.RobotHardware;
 
 @Autonomous(name="LeftSideBasicAutonomous", group="9044.NERD.")
-public class Autonomous extends LinearOpMode {
+public class LeftSideBasicAutonomous extends LinearOpMode {
 
     @Override
     public void runOpMode() {
         
-        HardwareFile2024 robot = new HardwareFile2024(this);
+        RobotHardware robot = new RobotHardware(this);
         robot.init();
         waitForStart();
-        runtime.reset();
+        robot.runtime.reset();
 
         int AUTO_SCORING = 4;
 
@@ -24,9 +25,11 @@ public class Autonomous extends LinearOpMode {
             // rotation - pos is clockwise, neg is counterclockwise
 
             //instructions
-            for (int scores = 0; scores = <AUTO_SCORING; scores++;) {
+            /*
+            for (int scores = 0; scores <= AUTO_SCORING; scores++;) {
                 //code to score 
             }
+            */
             //instructions like what is below
             
             robot.driveRobot(1.0, 0.0, 0.0);
