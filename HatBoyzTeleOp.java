@@ -25,11 +25,11 @@ public class HatBoyzTeleOp extends LinearOpMode {
     while (opModeIsActive()) {
 
       
-      //movement controller
+      // Movement controller
       driveRobot(gamepad1.left_stick_y,gamepad1.left_stick_x,gamepad1.right_stick_x);
       //(axial,strafe,rotation)
 
-      //Finger controll
+      // Finger control
       if (gamepad2.right_bumper) {
         toggleFingers("on");
       }
@@ -37,17 +37,32 @@ public class HatBoyzTeleOp extends LinearOpMode {
         toggleFingers("off");
       }
 
-      //standing code
+      // Standing code
       standUp(Math.abs(gamepad2.right_stick_y)/gamepad2.right_stick_y);
 
-      //arm reach code
-      if (gamepad2.a){
+      // Arm reach code
+      if (gamepad2.a || gamepad2.y){
         armExpand();
       }
 
-      //screw lift
-      liftScrew(Math.abs(gamepad2.left_stick_y)/gamepad2.left_stick_y);
+      // Screw spin
+      if (gamepad2.left_trigger > 0.25){
+        screwTurnPower(gamepad2.left_trigger);
+      }
       
+      // Screw lift
+      liftScrew(Math.abs(gamepad2.left_stick_y)/gamepad2.left_stick_y);
+
+      // Deposit door
+      if (gamepad2.right_trigger > 0.5){
+        toggleDepositDoor("on");
+      }
+      else{
+        toggleDepositDoor("off");
+      }
+
+      // Telemetry update
+      telemetryUpdate();
     }
   }
 }
