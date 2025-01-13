@@ -52,7 +52,7 @@ public class AutoWithHardware extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
         
-            robot.screwTurnPower(1.0); // Whatever full speed is
+            robot.toggleScrewTurn("normal); // Whatever full speed is
             sleep(100);
             
             robot.driveRobot(0.0, 1.0, 0.0); // (drive, strafe, turn) Get away from wall
@@ -73,7 +73,7 @@ public class AutoWithHardware extends LinearOpMode {
             sleep(1000);
             robot.toggleDepositDoor("off")  // Close
 
-            robot.screwTurnPower(0.0); // Stop screw spinning
+            robot.toggleScrewTurn("off); // Stop screw spinning
 
             robot.standUp("RestFromFull");  // Drop down
             robot.liftScrew("RestFromFull");  
