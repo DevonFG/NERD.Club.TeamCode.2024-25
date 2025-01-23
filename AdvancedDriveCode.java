@@ -1,7 +1,8 @@
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.robot.Robot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.HardwareFile2024;
+import org.firstinspires.ftc.teamcode.RobotHardware;
 
 @TeleOp(name="AdvancedDriveCode", group="9044.NERD.")
 public class AdvancedDriveCode extends LinearOpMode {
@@ -9,7 +10,7 @@ public class AdvancedDriveCode extends LinearOpMode {
     @Override
     public void runOpMode() {
         
-        HardwareFile2024 robot = new HardwareFile2024(this);
+        RobotHardware robot = new RobotHardware(this);
         robot.init();
         telemetry.addData(">", "Hardware Initialized");
         telemetry.update();
@@ -22,7 +23,7 @@ public class AdvancedDriveCode extends LinearOpMode {
         double turn;
         String power;
         String buttonsMode = "Fingers";
-        float deadZone = .2;
+        double deadZone = .2;
         
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -54,7 +55,7 @@ public class AdvancedDriveCode extends LinearOpMode {
               } else if (buttonsMode == "ScrewBrush") {
                 buttonsMode = "Fingers";
               } else {
-                telemetry.addData("Mode Unknown BUTTON ERROR");
+                telemetry.addData("Mode Unknown BUTTON ERROR", null);
                 telemetry.update();
                 // add code to flash both light colors
             }
@@ -88,7 +89,7 @@ public class AdvancedDriveCode extends LinearOpMode {
             }
               
             if (gamepad1.x) {
-              robot.toggleScrewBrush("off");
+              robot.toggleScrewTurn("off");
             }
 
             if (gamepad1.dpad_up) {
