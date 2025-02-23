@@ -1,4 +1,4 @@
- package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -36,13 +36,15 @@ public class CompleteEverythingCode extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private CRServo servo1;
-    private CRServo servo2;
-    private CRServo servo3;
-    private DcMotor motor0;
-    private DcMotor motor1;
-    private DcMotor motor2;
-    private DcMotor motor3;
+    private Servo screwServo;
+    private CRServo sweeperLeft;
+    private CRServo sweeperRight;
+    private CRServo slidesLeft;
+    private CRServo slidesRight;
+    private DcMotor screwSpin;
+    private DcMotor screwLift;
+    private DcMotor footLeft;
+    private DcMotor footRight;
     public DcMotor leftFrontWheel;
     public DcMotor leftBackWheel;
     public DcMotor rightFrontWheel;
@@ -52,8 +54,6 @@ public class CompleteEverythingCode extends LinearOpMode {
     private TouchSensor brushExtended;
     private TouchSensor brushRetracted;
     private boolean brushMoving = false;
-    public DcMotor screwLift = null; //Motors for the archimedes screw
-    public DcMotor screwTurn = null;
     
     public void driveRobot(double axial, double strafe, double rotation) {
         
@@ -77,13 +77,11 @@ public class CompleteEverythingCode extends LinearOpMode {
         min = Math.min(min, Math.abs(rightBackPower));
     
         if (max > 1.0) {
-            leftFrontPower  /= max;
-            rightFrontPower /= max;
-            leftBackPower   /= max;
-            rightBackPower  /= max;
-        }
-                
-        if (min < -1.0) {
+            leftFrontPower  = 1.0;
+            rightFrontPower = 1.0;
+            leftBackPower   = 1.0;
+            rightBackPower  = 1.0;
+        } else if (min < -1.0) {
           leftFrontPower    = -1.0;
           rightFrontPower   = -1.0;
           leftBackPower     = -1.0;
@@ -121,21 +119,23 @@ public class CompleteEverythingCode extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        
-        servo1 = hardwareMap.get(CRServo.class, "left_servo");
-        servo2 = hardwareMap.get(CRServo.class, "right_servo");
-        servo3 = hardwareMap.get(CRServo.class, "fingers_servo");
-        motor1 = hardwareMap.get(DcMotor.class, "archimedes");
-        motor0 = hardwareMap.get(DcMotor.class, "motor0");
-        motor3 = hardwareMap.get(DcMotor.class, "motor3");
-        motor2 = hardwareMap.get(DcMotor.class, "arch_up");
+
+        screwServo = hardwareMap.get(Servo.class, "");
+        slidesLeft = hardwareMap.get(CRServo.class, "left_servo");
+        slidesRight = hardwareMap.get(CRServo.class, "right_servo");
+        sweeperLeft = hardwareMap.get(CRServo.class, "fingers_servo");
+        sweeperRight = hardwareMap.get(CRServo.class, "");
+        screwSpin = hardwareMap.get(DcMotor.class, "archimedes");
+        footLeft = hardwareMap.get(DcMotor.class, "motor0");
+        footRight = hardwareMap.get(DcMotor.class, "motor3");
+        screwLift = hardwareMap.get(DcMotor.class, "arch_up");
         leftFrontWheel = hardwareMap.get(DcMotor.class, "leftFront");
         leftBackWheel = hardwareMap.get(DcMotor.class, "leftBack");
         rightFrontWheel = hardwareMap.get(DcMotor.class, "rightFront");
         rightBackWheel = hardwareMap.get(DcMotor.class, "rightBack");
         brushExtended      = hardwareMap.get(TouchSensor.class, "touchSensor1");
         brushRetracted     = hardwareMap.get(TouchSensor.class, "touchSensor2");
-        
+     
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         //change motor 2 direction
@@ -147,31 +147,35 @@ public class CompleteEverythingCode extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
             while (opModeIsActive()) {
             if (gamepad1.a) {
-                servo1.setPower(0.5);
-                servo2.setPower(-0.5);
+                slidesLeft.setPower(0.5);
+                slidesRight.setPower(-0.5);
                 telemetry.addData("A",  "TRUE");
+             checkEverything();
             }else if (gamepad1.b) {
-                servo1.setPower(-0.5);
-                servo2.setPower(0.5);
+                slidesRight.setPower(-0.5);
+                slidesLeft.setPower(0.5);
                 telemetry.addData("B",  "TRUE");
+             checkEverything();
+            } else {
+                slidesLeft.setPower(0.0);
+                slidesRight.setPower(0.0);
+             checkEverything();
             }
-            else {
-                servo1.setPower(0.0);
-                servo2.setPower(0.0);
-            }
+             /*
              if (brushExtended.isPressed() == true) {
                 servo1.setPower(0.0);
                 servo2.setPower(0.0);
                 telemetry.addData("BrushExtended",  "TRUE");
-             }else {} 
-            if  (brushRetracted.isPressed() == true) {
+             } else if (brushRetracted.isPressed() == true) {
                 servo1.setPower(0.0);
                 servo2.setPower(0.0);
                 telemetry.addData("BrushRetracted", "TRUE" );
-            }else {}
+            }else {
                 telemetry.addData("Status", "RUNNING");
                 telemetry.update();
-             
+             )
+*/
+              
             if (gamepad1.dpad_up) {
                 motor1.setPower (0.5);
                 telemetry.addData("Y",  "TRUE");
