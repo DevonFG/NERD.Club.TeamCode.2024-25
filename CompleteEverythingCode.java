@@ -113,14 +113,12 @@ public class CompleteEverythingCode extends LinearOpMode {
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        
-        
     
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
 
-        screwServo = hardwareMap.get(Servo.class, "");
+        screwServo = hardwareMap.get(Servo.class, "screwDoor");
         slidesLeft = hardwareMap.get(CRServo.class, "left_servo");
         slidesRight = hardwareMap.get(CRServo.class, "right_servo");
         sweeperLeft = hardwareMap.get(CRServo.class, "fingers_servo");
@@ -145,69 +143,40 @@ public class CompleteEverythingCode extends LinearOpMode {
         waitForStart();
         runtime.reset();
         // run until the end of the match (driver presses STOP)
-            while (opModeIsActive()) {
-            if (gamepad1.a) {
+        while (opModeIsActive()) {
+            if (gamepad2.a) {
                 slidesLeft.setPower(0.5);
                 slidesRight.setPower(-0.5);
                 telemetry.addData("A",  "TRUE");
-             checkEverything();
-            }else if (gamepad1.b) {
-                slidesRight.setPower(-0.5);
-                slidesLeft.setPower(0.5);
+                checkEverything();
+            } else if (gamepad1.b) {
+                slidesRight.setPower(0.5);
+                slidesLeft.setPower(-0.5);
                 telemetry.addData("B",  "TRUE");
-             checkEverything();
+                checkEverything();
             } else {
                 slidesLeft.setPower(0.0);
                 slidesRight.setPower(0.0);
-             checkEverything();
+                checkEverything();
             }
-             /*
-             if (brushExtended.isPressed() == true) {
-                servo1.setPower(0.0);
-                servo2.setPower(0.0);
-                telemetry.addData("BrushExtended",  "TRUE");
-             } else if (brushRetracted.isPressed() == true) {
-                servo1.setPower(0.0);
-                servo2.setPower(0.0);
-                telemetry.addData("BrushRetracted", "TRUE" );
-            }else {
-                telemetry.addData("Status", "RUNNING");
-                telemetry.update();
-             )
-*/
-              
-            if (gamepad1.dpad_up) {
-                motor1.setPower (0.5);
-                telemetry.addData("Y",  "TRUE");
-            } 
-            else if (gamepad1.dpad_down) {
-                motor1.setPower (-0.5);
-                telemetry.addData("X",  "TRUE");
-            } if (gamepad1.y) {
-                motor0.setPower (0.5);
-                motor3.setPower (0.5);
-                telemetry.addData("",  "TRUE");
-            } else if (gamepad1.x) {
-                motor0.setPower (-0.5);
-                motor3.setPower (-0.5);
-                telemetry.addData("X",  "TRUE");
-            } 
+            
+            sweeperLeft.setPower(gamepad2.left_stick_y);
+            sweeperRight.setPower(gamepad2.left_stick_y);
 
             // if (gamepad1.dpadup) {
             // motor4.setPower (0.5);
             // } else if (gamepad1.dpadright) {
             // motor4.setPower (-0.5);
             //}
-        init();
-        waitForStart();
-        //runtime.reset();
-        
-        double axial;
-        double strafe;
-        double rotation;
-        
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
+            init();
+            waitForStart();
+            //runtime.reset();
+            
+            double axial;
+            double strafe;
+            double rotation;
+            
+            // run until the end of the match (driver presses STOP)
           
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
             axial    =   -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value - Forward and Backward 
