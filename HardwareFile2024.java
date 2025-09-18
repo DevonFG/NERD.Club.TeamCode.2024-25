@@ -1,105 +1,131 @@
+
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.robotcore.external.navigation.Rotation;
-import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-public class RobotHardware {
+public class HardwareFile2024 {
 
-    /* Declare OpMode members. */
-    private LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
+    // Declare OpMode members.
+    public LinearOpMode myOpMode = null;
+    
+    // Declare OpMode members
+public ElapsedTime runtime = new ElapsedTime();
 
-    // Define Motor and Servo objects  (Make them private so they can't be accessed externally)
-    private DcMotor backLeft   = null;
-    private DcMotor frontLeft  = null;
-    private DcMotor backRight   = null;
-    private DcMotor frontRight  = null;
+public DcMotor leftFrontWheel = null; //Motors to control all wheels
+public DcMotor leftBackWheel = null;
+public DcMotor rightFrontWheel = null;
+public DcMotor rightBackWheel = null;
 
-    // Define Drive constants.  Make them public so they CAN be used by the calling OpMode
+// Define a constructor that allows the OpMode to pass a reference to itself.
+    public Hardware (LinearOpMode opmode) {
+        myOpMode = opmode;
+        
+    }
 
 
-    // Define a constructor that allows the OpMode to pass a reference to itself.
-    public RobotHardware (LinearOpMode opmode) {
+/**
+    * Initialize all the robot's hardware.
+    * This method must be called ONCE when the OpMode is initialized.
+    * <p>
+    * All of the hardware devices are accessed via the hardware map, and initialized.
+    */
+     
+    public HardwareFile2024 (LinearOpMode opmode) {
         myOpMode = opmode;
     }
+     
+public void init()    {
 
-    /**
-     * Initialize all the robot's hardware.
-     * This method must be called ONCE when the OpMode is initialized.
-     * <p>
-     * All of the hardware devices are accessed via the hardware map, and initialized.
-     */
-    public void init()    {
-        // Define and Initialize Motors (note: need to use reference to actual OpMode).
-        backLeft  = myOpMode.hardwareMap.get(DcMotor.class, "back_left");
-        backRight = myOpMode.hardwareMap.get(DcMotor.class, "back_right");
-        frontLeft = myOpMode.hardwareMap.get(DcMotor.class, "front_left");
-        frontRight = myOpMode.hardwareMap.get(DcMotor.class, "front_right");
+        leftFrontWheel  = hardwareMap.get(DcMotor.class, "leftFront");
+        leftBackWheel  = hardwareMap.get(DcMotor.class, "leftBack");
+        rightFrontWheel = hardwareMap.get(DcMotor.class, "rightFront");
+        rightBackWheel = hardwareMap.get(DcMotor.class, "rightBack");
+        leftFrontWheel  = myOpMode.hardwareMap.get(DcMotor.class, "leftFront");
+        leftBackWheel   = myOpMode.hardwareMap.get(DcMotor.class, "leftBack");
+        rightFrontWheel = myOpMode.hardwareMap.get(DcMotor.class, "rightFront");
+        rightBackWheel  = myOpMode.hardwareMap.get(DcMotor.class, "rightBack");
 
-        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
-        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        backLeft.setDirection(DcMotor.Direction.REVERSE);
-        backRight.setDirection(DcMotor.Direction.FORWARD);
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        frontRight.setDirection(DcMotor.Direction.FORWARD);
+leftFrontWheel.setDirection(DcMotor.Direction.REVERSE);
+leftBackWheel.setDirection(DcMotor.Direction.REVERSE);
+rightFrontWheel.setDirection(DcMotor.Direction.FORWARD);
+rightBackWheel.setDirection(DcMotor.Direction.FORWARD);
 
-        myOpMode.telemetry.addData(">", "Hardware Initialized");
-        myOpMode.telemetry.update();
-    }
+myOpMode.telemetry.addData(">", "Hardware Initialized");
+myOpMode.telemetry.update();
+}
 
-    /**
-     * Calculates the left/right motor powers required to achieve the requested
-     * robot motions: Drive (Axial motion) and Turn (Yaw motion).
-     * Then sends these power levels to the motors.
-     *
-     * @param Drive     Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
-     * @param Turn      Right/Left turning power (-1.0 to 1.0) +ve is CW
-     */
-    public void driveRobot(double Forward, double Rotation, double Strafe) {
-        // Combine drive and turn for blended motion.
-        double FL_Drive  = - Forward - Rotation - Strafe;
-        double FR_Drive  = - Forward + Rotation + Strafe;
-        double BL_Drive  =   Forward - Rotation + Strafe;
-        double BR_Drive  =   Forward + Rotation - Strafe;
+/**
+    * Calculates the left/right motor powers required to achieve the requested
+    * robot motions: Drive (Axial motion) and Turn (Yaw motion).
+    * Then sends these power levels to the motors.
+    *
+    * @param Drive     Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
+    * @param Turn      Right/Left turning power (-1.0 to 1.0) +ve is CW
+    */
+     
+     double axial;
+     double strafe;
+     double rotation;
+     
+public void driveRobot(double axial, double strafe, double rotation) {
+// Combine drive and turn for blended motion.
+double leftFrontPower  = - axial - strafe - rotation;
+double rightFrontPower = - axial + strafe + rotation;
+            double leftBackPower   = - axial + strafe - rotation;
+            double rightBackPower  = - axial - strafe + rotation;
+            double leftBackPower   =   axial + strafe - rotation;
+            double rightBackPower  =   axial - strafe + rotation;
 
-        // Scale the values so neither exceed +/- 1.0
-        double max = Math.max(Math.abs(FL_Drive), Math.abs(FR_Drive));
-               max = Math.max(max, Math.abs(BL_Drive));
-               max = Math.max(max, Math.abs(BR_Drive));
-               
-        double min = Math.min(Math.abs(FL_Drive), Math.abs(FR_Drive));
-               min = Math.min(min, Math.abs(BL_Drive));
-               min = Math.min(min, Math.abs(BR_Drive));
-               
-               
-        if (max > 1.0)
-        {
-            FL_Drive /= max;
-            FR_Drive /= max;
-            BL_Drive /= max;
-            BR_Drive /= max;
-        }
-        
-        if (min < 1.0)
-        {
-            FL_Drive /= min;
-            FR_Drive /= min;
-            BL_Drive /= min;
-            BR_Drive /= min;
-        }
+// Scale the values so neither exceed +/- 1.0          
+double max;
+double min;
 
-        frontLeft.setPower(FL_Drive);
-        frontRight.setPower(FR_Drive);
-        backLeft.setPower(BL_Drive);
-        backRight.setPower(BR_Drive);
-        
-    }
-    
-    
+// Normalize the values so no wheel power exceeds 100%
+// This ensures that the robot maintains the desired motion.
+max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
+max = Math.max(max, Math.abs(leftBackPower));
+max = Math.max(max, Math.abs(rightBackPower));
 
-    
+min = Math.min(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
+min = Math.min(min, Math.abs(leftBackPower));
+min = Math.min(min, Math.abs(rightBackPower));
+
+if (max > 1.0) {
+leftFrontPower  /= max;
+rightFrontPower /= max;
+leftBackPower   /= max;
+rightBackPower  /= max;
+}
+
+if (min < -1.0) {
+leftFrontPower    = -1.0;
+rightFrontPower   = -1.0;
+leftBackPower     = -1.0;
+rightBackPower    = -1.0;
+}
+
+// Send calculated power to wheels
+        leftFrontDrive.setPower(leftFrontPower);
+        rightFrontDrive.setPower(rightFrontPower);
+        leftBackDrive.setPower(leftBackPower);
+        rightBackDrive.setPower(rightBackPower);
+        leftFrontWheel.setPower(leftFrontPower);
+        rightFrontWheel.setPower(rightFrontPower);
+        leftBackWheel.setPower(leftBackPower);
+        rightBackWheel.setPower(rightBackPower);
+
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
+            telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+            telemetry.update();
+            myOpMode.telemetry.addData("Status", "Run Time: " + runtime.toString());
+            myOpMode.telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
+            myOpMode.telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+            myOpMode.telemetry.update();
+}
 }
